@@ -11,7 +11,7 @@ public class LocalPlayerController : MonoBehaviour
 
     void Update()
     {
-        Vector3 mov = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        Vector3 mov = new Vector3(InputController.instance.move.x, 0, InputController.instance.move.y);
         _unit.Move(mov.normalized * GameConfigsContainer.instance.config.playerSpeed);
     }
 
