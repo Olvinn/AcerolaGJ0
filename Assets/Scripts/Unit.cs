@@ -13,7 +13,14 @@ public class Unit : MonoBehaviour
 
     void Update()
     {
-        Vector3 mov = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        _agent.Move(mov);
+        
+    }
+
+    public void Move(Vector3 dir)
+    {
+        if (dir.sqrMagnitude == 0)
+            return;
+        _agent.Move(dir * Time.deltaTime);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * _agent.angularSpeed);
     }
 }
