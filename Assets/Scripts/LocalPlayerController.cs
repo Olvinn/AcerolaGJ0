@@ -19,4 +19,11 @@ public class LocalPlayerController : MonoBehaviour
     {
         _unit = unit;
     }
+
+    public void Teleport(Vector3 pos)
+    {
+        _unit.Teleport(pos);
+    }
+
+    public Vector3 GetPos() => _unit.transform.position;
 }

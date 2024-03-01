@@ -12,6 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c7bd188a4105dd4f9ac34ae9c749d19, type: 3}
   m_Name: Debug
   m_EditorClassIdentifier: 
-  unitAddressable: unit_Player
-  testEnvironmentAddressable: location_Test
+  unit:
+    m_AssetGUID: 48e6c5303cdd26a41bb81677e943bfca
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  testFloor1:
+    m_AssetGUID: d6575472a53857b42abca00163e0da37
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  testFloor2:
+    m_AssetGUID: 783f137d432ae214d8538712c5f62c04
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   playerSpeed: 10

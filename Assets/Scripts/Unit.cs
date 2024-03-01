@@ -23,4 +23,9 @@ public class Unit : MonoBehaviour
         _agent.Move(dir * Time.deltaTime);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * _agent.angularSpeed);
     }
+
+    public void Teleport(Vector3 pos)
+    {
+        _agent.Warp(pos);
+    }
 }
