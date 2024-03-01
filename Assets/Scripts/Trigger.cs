@@ -10,7 +10,12 @@ public class Trigger : MonoBehaviour
         {
             case TriggerType.MoveToSecondFloor:
             {
-                GameController.instance.LoadSecondFloor();
+                GameController.instance.MoveToSecondFloor();
+                break;
+            }
+            case TriggerType.MoveToFirstFloor:
+            {
+                GameController.instance.MoveToFirstFloor();
                 break;
             }
         }
@@ -20,4 +25,5 @@ public class Trigger : MonoBehaviour
 public enum TriggerType
 {
     MoveToSecondFloor,
+    MoveToFirstFloor
 }

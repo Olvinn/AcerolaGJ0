@@ -10,6 +10,7 @@ public class GameController : Singleton<GameController>
     [SerializeField] private NavMeshSurface _navmesh;
 
     private LocalPlayerController _playerController;
+    private GameObject _loc1floor, _loc2floor;
 
     private IEnumerator Start()
     {
@@ -19,15 +20,24 @@ public class GameController : Singleton<GameController>
         while (!locationHandleFloor1.IsDone || !playerHandle.IsDone)
             yield return null;
 
-        Instantiate(locationHandleFloor1.Result, _environment);
+        _loc1floor = Instantiate(locationHandleFloor1.Result, _environment);
         SetUpPlayer(Instantiate(playerHandle.Result, _units).GetComponent<Unit>());
         
         _navmesh.BuildNavMesh();
     }
 
-    public void LoadSecondFloor()
+    public void MoveToSecondFloor()
     {
         StartCoroutine(LoadingSecondFloor());
+    }
+    
+    public void MoveToFirstFloor()
+    {
+        Destroy(_loc2floor);
+        _navmesh.BuildNavMesh();
+        var pos = _playerController.GetPos();
+        pos.y = 0;
+        _playerController.Teleport(pos);
     }
 
     private void SetUpPlayer(Unit unit)
@@ -43,7 +53,7 @@ public class GameController : Singleton<GameController>
         while (!locationHandleFloor2.IsDone)
             yield return null;
         
-        Instantiate(locationHandleFloor2.Result, _environment);
+        _loc2floor = Instantiate(locationHandleFloor2.Result, _environment);
         _navmesh.BuildNavMesh();
         _playerController.Teleport(_playerController.GetPos() + Vector3.up * GameConfigsContainer.instance.config.secondFloorHeight);
     }
