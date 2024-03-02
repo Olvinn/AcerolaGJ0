@@ -10,13 +10,11 @@ namespace Triggers
         
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log("Entered");
             SubscribeOnInput();
         }
 
         private void OnTriggerExit(Collider other)
         {
-            Debug.Log("Quited");
             Unsubscribe();
         }
 

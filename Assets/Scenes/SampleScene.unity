@@ -659,7 +659,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e28dffc389e41d4980fcc77e9d92904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _input: {fileID: 639736914}
   move: {x: 0, y: 0}
+  lookDirection: {x: 0, y: 0}
 --- !u!114 &639736914
 MonoBehaviour:
   m_ObjectHideFlags: 0

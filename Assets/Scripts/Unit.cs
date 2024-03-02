@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -5,27 +6,29 @@ using UnityEngine.AI;
 public class Unit : MonoBehaviour
 {
     [SerializeField] private NavMeshAgent _agent;
-    
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
 
     public void Move(Vector3 dir)
     {
         if (dir.sqrMagnitude == 0)
             return;
         _agent.Move(dir * Time.deltaTime);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * _agent.angularSpeed);
+    }
+
+    public void Look(Vector3 dir)
+    {
+        if (dir.sqrMagnitude == 0)
+            return;
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(dir),
+            Time.deltaTime * GameConfigsContainer.instance.config.playerAngularSpeed);
     }
 
     public void Teleport(Vector3 pos)
     {
         _agent.Warp(pos);
+    }
+
+    private void Reset()
+    {
+        _agent = GetComponent<NavMeshAgent>();
     }
 }

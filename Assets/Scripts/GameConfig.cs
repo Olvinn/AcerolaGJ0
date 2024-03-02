@@ -10,6 +10,7 @@ public class GameConfig : ScriptableObject
     
     // Unit Configs
     [Space(10)] public float playerSpeed = 50;
+    public float playerAngularSpeed = 720;
     
     //Camera Configs
     [Space(10)] public float cameraLerpSpeed = 10;
