@@ -148,7 +148,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8143460679805667868}
   - component: {fileID: 7088036176881173737}
-  - component: {fileID: 2622509676349232477}
+  - component: {fileID: 7165287406744014178}
   m_Layer: 0
   m_Name: To Second Floor
   m_TagString: Untagged
@@ -193,7 +193,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 10, y: 4.2637224, z: 10}
   m_Center: {x: 0, y: 2.1318612, z: 0}
---- !u!114 &2622509676349232477
+--- !u!114 &7165287406744014178
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -202,12 +202,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2106314538836003855}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94201171c915a394f9b39b7bdf49986d, type: 3}
+  m_Script: {fileID: 11500000, guid: cf63564ff37180c4599b1983855b9495, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hint: {fileID: 5848243953598375154}
-  _isHidden: 0
   type: 0
+  _hint: {fileID: 5848243953598375154}
 --- !u!1 &2607626971284270315
 GameObject:
   m_ObjectHideFlags: 0
