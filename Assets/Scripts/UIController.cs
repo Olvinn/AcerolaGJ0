@@ -22,6 +22,8 @@ public class UIController : Singleton<UIController>
         while (!handler.IsDone)
             yield return null;
         _hintPrefab = handler.Result;
+        
+        InstantiateHint();
     }
 
     public int ShowHint(Color color, string text, Vector3 pos)

@@ -5,6 +5,7 @@ namespace Triggers
 {
     public class TriggerBase : MonoBehaviour
     {
+        [SerializeField] private Transform _cattachedPoint;
         public TriggerType type;
 
         protected virtual void Reset()
@@ -18,12 +19,12 @@ namespace Triggers
             {
                 case TriggerType.MoveToSecondFloor:
                 {
-                    GameController.instance.MoveToSecondFloor();
+                    GameController.instance.MoveToSecondFloor(_cattachedPoint);
                     break;
                 }
                 case TriggerType.MoveToFirstFloor:
                 {
-                    GameController.instance.MoveToFirstFloor();
+                    GameController.instance.MoveToFirstFloor(_cattachedPoint);
                     break;
                 }
             }

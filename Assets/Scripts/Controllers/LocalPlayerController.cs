@@ -19,9 +19,9 @@ public class LocalPlayerController : MonoBehaviour
         _unit = unit;
     }
 
-    public void Teleport(Vector3 pos)
+    public void Teleport(Vector3 pos, Quaternion rot)
     {
-        _unit.Teleport(pos);
+        _unit.Teleport(pos, rot);
     }
 
     public Vector3 GetPos() => _unit.transform.position;

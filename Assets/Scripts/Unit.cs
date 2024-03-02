@@ -22,9 +22,10 @@ public class Unit : MonoBehaviour
             Time.deltaTime * GameConfigsContainer.instance.config.playerAngularSpeed);
     }
 
-    public void Teleport(Vector3 pos)
+    public void Teleport(Vector3 pos, Quaternion rot)
     {
         _agent.Warp(pos);
+        transform.rotation = rot;
     }
 
     private void Reset()

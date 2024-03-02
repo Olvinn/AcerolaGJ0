@@ -28,18 +28,16 @@ namespace Controllers
             _navmesh.BuildNavMesh();
         }
 
-        public void MoveToSecondFloor()
+        public void MoveToSecondFloor(Transform point)
         {
-            StartCoroutine(LoadingSecondFloor());
+            StartCoroutine(LoadingSecondFloor(point));
         }
     
-        public void MoveToFirstFloor()
+        public void MoveToFirstFloor(Transform point)
         {
             Destroy(_loc2floor);
             _navmesh.BuildNavMesh();
-            var pos = _playerController.GetPos();
-            pos.y = 0;
-            _playerController.Teleport(pos);
+            _playerController.Teleport(point.position, point.rotation);
         }
 
         public Vector3 GetPlayerPos()
@@ -55,7 +53,7 @@ namespace Controllers
             _playerController.SetUnit(unit);
         }
 
-        IEnumerator LoadingSecondFloor()
+        IEnumerator LoadingSecondFloor(Transform point)
         {
             var locationHandleFloor2 = Addressables.LoadAssetAsync<GameObject>(GameConfigsContainer.instance.config.testFloor2);
         
@@ -64,7 +62,7 @@ namespace Controllers
         
             _loc2floor = Instantiate(locationHandleFloor2.Result, _environment);
             _navmesh.BuildNavMesh();
-            _playerController.Teleport(_playerController.GetPos() + Vector3.up * GameConfigsContainer.instance.config.secondFloorHeight);
+            _playerController.Teleport(point.position, point.rotation);
         }
     }
 }
