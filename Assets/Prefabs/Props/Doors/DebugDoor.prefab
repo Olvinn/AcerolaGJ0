@@ -652,7 +652,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
-  switcher: {fileID: 7929931037037980628}
+  _switcher: {fileID: 7929931037037980628}
   _hint: {fileID: 6735452277595517837}
 --- !u!114 &7929931037037980628
 MonoBehaviour:

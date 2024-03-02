@@ -7,7 +7,7 @@ namespace Triggers
     {
         public TriggerType type;
 
-        private void Reset()
+        protected virtual void Reset()
         {
             GetComponent<Collider>().isTrigger = true;
         }

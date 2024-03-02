@@ -6,7 +6,7 @@ namespace Triggers
     [RequireComponent(typeof(Collider))]
     public class ExposedTrigger : TriggerBase
     {
-        [SerializeField] private Switcher switcher;
+        [SerializeField] private Switcher _switcher;
         [SerializeField] private GameObject _hint;
         
         private void OnTriggerEnter(Collider other)
@@ -35,8 +35,14 @@ namespace Triggers
         {
             base.Trigger();
             Unsubscribe();
-            if (switcher)
-                switcher.Switch();
+            if (_switcher)
+                _switcher.Switch();
+        }
+
+        protected override void Reset()
+        {
+            base.Reset();
+            _switcher = GetComponent<Switcher>();
         }
     }
 }
