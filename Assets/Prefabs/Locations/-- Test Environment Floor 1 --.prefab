@@ -312,8 +312,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
-  switcher: {fileID: 0}
-  _hint: {fileID: 5848243953598375154}
+  _switcher: {fileID: 0}
+  _hintText: Upstaris
 --- !u!1 &2442029885929452385
 GameObject:
   m_ObjectHideFlags: 0

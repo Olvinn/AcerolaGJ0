@@ -7,7 +7,8 @@ namespace Triggers
     public class ExposedTrigger : TriggerBase
     {
         [SerializeField] private Switcher _switcher;
-        [SerializeField] private GameObject _hint;
+        [SerializeField] private string _hintText;
+        private int _cachedHintKey;
         
         private void OnTriggerEnter(Collider other)
         {
@@ -22,13 +23,13 @@ namespace Triggers
         private void SubscribeOnInput()
         {
             InputController.instance.onInteract += Trigger;
-            _hint.gameObject.SetActive(true);
+            _cachedHintKey = UIController.instance.ShowHint(GameConfigsContainer.instance.config.useColor, _hintText, transform.position + Vector3.up);
         }
 
         private void Unsubscribe()
         {
             InputController.instance.onInteract -= Trigger;
-            _hint.gameObject.SetActive(false);
+            UIController.instance.HideHint(_cachedHintKey);
         }
 
         public override void Trigger()

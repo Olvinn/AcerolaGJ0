@@ -7,6 +7,7 @@ public class GameConfig : ScriptableObject
     // Addressables
     public AssetReferenceGameObject unit;
     public AssetReferenceGameObject testFloor1, testFloor2;
+    public AssetReferenceGameObject hint;
     
     // Unit Configs
     [Space(10)] public float playerSpeed = 50;
@@ -17,4 +18,5 @@ public class GameConfig : ScriptableObject
     
     //World Configs
     [Space(10)] public float secondFloorHeight = 6;
+    public Color useColor;
 }

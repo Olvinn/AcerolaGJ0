@@ -691,8 +691,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 2
-  switcher: {fileID: 0}
-  _hint: {fileID: 3382133647270346690}
+  _switcher: {fileID: 0}
+  _hintText: Downstairs
 --- !u!1 &8783917367893839724
 GameObject:
   m_ObjectHideFlags: 0

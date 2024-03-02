@@ -27,4 +27,13 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
+  hint:
+    m_AssetGUID: babf69b63be57654c8002a32fccc3090
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   playerSpeed: 10
+  playerAngularSpeed: 720
+  cameraLerpSpeed: 10
+  secondFloorHeight: 6
+  useColor: {r: 0.48771805, g: 0.754717, b: 0.58225906, a: 1}
