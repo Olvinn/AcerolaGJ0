@@ -31,6 +31,7 @@ namespace Triggers
 
         public enum TriggerType
         {
+            None,
             MoveToSecondFloor,
             MoveToFirstFloor
         }
