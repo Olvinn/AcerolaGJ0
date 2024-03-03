@@ -66,6 +66,8 @@ namespace Controllers
             yield return new WaitForSeconds(GameConfigsContainer.instance.config.aiThinkingDelay);
             FindPlayer();
             Move();
+            if (_playerFound)
+                _unit.Shoot();
             StartCoroutine(Thinking());
         }
     }
