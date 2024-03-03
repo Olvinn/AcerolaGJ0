@@ -32,6 +32,13 @@ namespace Controllers
         {
             _unit = unit;
             _unit.onCollide = OnCollision;
+            _unit.onDamage = Die;
+        }
+
+        public void Die()
+        {
+            Destroy(_unit.gameObject);
+            Destroy(gameObject);
         }
 
         private void FindPlayer()

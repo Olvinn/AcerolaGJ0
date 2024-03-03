@@ -3,11 +3,13 @@ using Controllers;
 using Triggers;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(NavMeshAgent)), RequireComponent(typeof(Rigidbody))]
 public class Unit : MonoBehaviour
 {
     public Action<ContactPoint[]> onCollide;
+    public Action onDamage;
     public event Action<ExposedTrigger> onTriggerEnter, onTriggerExit;
 
     [SerializeField] private NavMeshAgent _agent;
@@ -75,12 +77,21 @@ public class Unit : MonoBehaviour
 
     public void Shoot()
     {
-        Ray ray = new Ray(transform.position + Vector3.up + transform.forward, transform.forward);
+        Ray ray = new Ray(transform.position + Vector3.up + transform.forward, 
+            Quaternion.Euler(Random.Range(-5f,5f),Random.Range(-5f,5f), 0) * transform.forward);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, GameConfigsContainer.instance.config.shootingDistance, _shootingLayer))
         {
             VFX impact = VFXController.instance.GetEffect(EffectType.BulletImpact);
             impact.transform.position = hit.point;
+            Unit unit;
+            if (hit.collider.gameObject.TryGetComponent(out unit))
+                unit.TakeDamage();
         }
+    }
+
+    public void TakeDamage()
+    {
+        onDamage?.Invoke();
     }
 }
