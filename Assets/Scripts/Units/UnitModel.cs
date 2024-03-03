@@ -6,12 +6,13 @@ namespace Units
     {
         public Action onDead;
         public float hp { get; private set; }
+        public float maxHp { get; private set; }
         public float attackDamage { get; private set; }
         public Team team { get; private set; }
 
         public UnitModel(float hp, float attackDamage, Team team)
         {
-            this.hp = hp;
+            maxHp = this.hp = hp;
             this.attackDamage = attackDamage;
             this.team = team;
         }

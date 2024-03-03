@@ -47,6 +47,7 @@ public class LocalPlayerController : MonoBehaviour
         {
             CameraController.instance.Shake(GameConfigsAndSettings.instance.config.damageCameraShakingMagnitude,
                 GameConfigsAndSettings.instance.config.damageCameraShakingDuration);
+            UIController.instance.UpdatePlayerHP(_model.hp, _model.maxHp);
         }
     }
     

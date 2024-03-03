@@ -41,11 +41,7 @@ namespace Controllers
         
         public void TakeDamage(Damage damage)
         {
-            if (_model.TakeDamage(damage))
-            {
-                CameraController.instance.Shake(GameConfigsAndSettings.instance.config.damageCameraShakingMagnitude,
-                    GameConfigsAndSettings.instance.config.damageCameraShakingDuration);
-            }
+            _model.TakeDamage(damage);
         }
 
         public void Die()

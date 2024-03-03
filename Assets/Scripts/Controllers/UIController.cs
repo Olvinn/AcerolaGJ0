@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -8,6 +9,7 @@ namespace Controllers
     public class UIController : Singleton<UIController>
     {
         [SerializeField] private Transform _hints;
+        [SerializeField] private HpBar _playerHP;
 
         private GameObject _hintPrefab;
 
@@ -51,6 +53,11 @@ namespace Controllers
                 _unusedHints.Add(hint);
                 hint.gameObject.SetActive(false);
             }
+        }
+
+        public void UpdatePlayerHP(float value, float max)
+        {
+            _playerHP.SetValue(value, max);
         }
 
         private void InstantiateHint()
