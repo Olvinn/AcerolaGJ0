@@ -155,6 +155,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _agent: {fileID: 6997014406207592305}
   _rigidbody: {fileID: 1185465792110743510}
+  _shootingLayer:
+    serializedVersion: 2
+    m_Bits: 9
 --- !u!136 &5515081855113086287
 CapsuleCollider:
   m_ObjectHideFlags: 0

@@ -362,7 +362,7 @@ GameObject:
   - component: {fileID: 3830168745633575818}
   - component: {fileID: 869148954559206748}
   - component: {fileID: 7929931037037980628}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: DebugDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}

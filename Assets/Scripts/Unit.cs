@@ -7,6 +7,7 @@ public class Unit : MonoBehaviour
 {
     [SerializeField] private NavMeshAgent _agent;
     [SerializeField] private Rigidbody _rigidbody;
+    [SerializeField] private LayerMask _shootingLayer;
     private Vector3 _cachedMovDir;
 
     private void FixedUpdate()
@@ -51,7 +52,7 @@ public class Unit : MonoBehaviour
     {
         Ray ray = new Ray(transform.position + Vector3.up + transform.forward, transform.forward);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit, 100, _shootingLayer))
         {
             VFX impact = VFXController.instance.GetEffect(EffectType.BulletImpact);
             impact.transform.position = hit.point;
