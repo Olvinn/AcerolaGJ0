@@ -8,7 +8,7 @@ namespace Controllers
     {
         public Vector2 move;
         public Vector2 lookDirection;
-        public Action onInteract;
+        public Action onInteract, onShoot;
 
         public void OnMove(InputValue value)
         {
@@ -34,6 +34,11 @@ namespace Controllers
         public void OnInteract(InputValue value)
         {
             onInteract?.Invoke();
+        }
+
+        public void OnFire(InputValue value)
+        {
+            onShoot?.Invoke();
         }
     }
 }

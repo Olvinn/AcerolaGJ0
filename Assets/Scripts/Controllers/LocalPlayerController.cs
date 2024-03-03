@@ -5,6 +5,11 @@ public class LocalPlayerController : MonoBehaviour
 {
     private Unit _unit;
 
+    private void Start()
+    {
+        InputController.instance.onShoot = _unit.Shoot;
+    }
+
     void Update()
     {
         Vector3 mov = new Vector3(InputController.instance.move.x, 0, InputController.instance.move.y);

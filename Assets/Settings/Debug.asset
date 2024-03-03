@@ -27,6 +27,11 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
+  bulletImpactVFX:
+    m_AssetGUID: 889de6dbb4633544db11a239336a4584
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   playerSpeed: 10
   playerAngularSpeed: 720
   cameraLerpSpeed: 10

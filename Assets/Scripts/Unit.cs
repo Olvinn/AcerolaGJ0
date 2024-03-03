@@ -1,3 +1,4 @@
+using Controllers;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -12,6 +13,12 @@ public class Unit : MonoBehaviour
     {
         _rigidbody.velocity = Vector3.zero;
         _rigidbody.angularVelocity = Vector3.zero;
+    }
+
+    private void Reset()
+    {
+        _agent = GetComponent<NavMeshAgent>();
+        _rigidbody = GetComponent<Rigidbody>();
     }
 
     public void Move(Vector3 dir)
@@ -40,9 +47,14 @@ public class Unit : MonoBehaviour
         transform.rotation = rot;
     }
 
-    private void Reset()
+    public void Shoot()
     {
-        _agent = GetComponent<NavMeshAgent>();
-        _rigidbody = GetComponent<Rigidbody>();
+        Ray ray = new Ray(transform.position + Vector3.up + transform.forward, transform.forward);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+        {
+            VFX impact = VFXController.instance.GetEffect(EffectType.BulletImpact);
+            impact.transform.position = hit.point;
+        }
     }
 }
