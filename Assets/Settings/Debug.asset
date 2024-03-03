@@ -12,8 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c7bd188a4105dd4f9ac34ae9c749d19, type: 3}
   m_Name: Debug
   m_EditorClassIdentifier: 
-  unit:
+  playerUnit:
     m_AssetGUID: 48e6c5303cdd26a41bb81677e943bfca
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  enemyUnit:
+    m_AssetGUID: 5b1471d41705dae46a4238314e35c723
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
@@ -34,5 +39,7 @@ MonoBehaviour:
     m_EditorAssetChanged: 0
   playerSpeed: 10
   playerAngularSpeed: 720
+  shootingDistance: 100
+  aiThinkingDelay: 0
   cameraLerpSpeed: 10
   useColor: {r: 0.48771805, g: 0.754717, b: 0.58225906, a: 1}

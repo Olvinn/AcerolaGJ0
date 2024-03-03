@@ -1,3 +1,4 @@
+using System;
 using Controllers;
 using UnityEngine;
 using UnityEngine.AI;
@@ -5,6 +6,8 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent)), RequireComponent(typeof(Rigidbody))]
 public class Unit : MonoBehaviour
 {
+    public Action<ContactPoint[]> onCollide;
+    
     [SerializeField] private NavMeshAgent _agent;
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private LayerMask _shootingLayer;
@@ -21,11 +24,21 @@ public class Unit : MonoBehaviour
         _agent = GetComponent<NavMeshAgent>();
         _rigidbody = GetComponent<Rigidbody>();
     }
+    
+    private void OnCollisionEnter(Collision collision)
+    {
+        onCollide?.Invoke(collision.contacts);
+    }
 
     public void Move(Vector3 dir)
     {
         _agent.Move(_cachedMovDir * Time.deltaTime);
         _cachedMovDir = dir;
+    }
+
+    public void MoveTo(Vector3 pos)
+    {
+        _agent.SetDestination(pos);
     }
 
     public void Look(Vector3 dir)
@@ -52,7 +65,7 @@ public class Unit : MonoBehaviour
     {
         Ray ray = new Ray(transform.position + Vector3.up + transform.forward, transform.forward);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 100, _shootingLayer))
+        if (Physics.Raycast(ray, out hit, GameConfigsContainer.instance.config.shootingDistance, _shootingLayer))
         {
             VFX impact = VFXController.instance.GetEffect(EffectType.BulletImpact);
             impact.transform.position = hit.point;
