@@ -24,15 +24,10 @@ MonoBehaviour:
     - unit
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d6575472a53857b42abca00163e0da37
-    m_Address: location_Test_Floor_1
+    m_Address: location_Test
     m_ReadOnly: 0
     m_SerializedLabels:
     - location
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 783f137d432ae214d8538712c5f62c04
-    m_Address: location_Test_Floor_2
-    m_ReadOnly: 0
-    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: babf69b63be57654c8002a32fccc3090
     m_Address: ui_Hint

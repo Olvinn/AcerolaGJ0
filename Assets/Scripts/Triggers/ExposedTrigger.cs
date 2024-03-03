@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Triggers
 {
     [RequireComponent(typeof(Collider))]
-    public class ExposedTrigger : TriggerBase
+    public sealed class ExposedTrigger : TriggerBase
     {
         [SerializeField] private Switcher _switcher;
         [SerializeField] private string _hintText;
@@ -32,7 +32,7 @@ namespace Triggers
             UIController.instance.HideHint(_cachedHintKey);
         }
 
-        public override void Trigger()
+        protected override void Trigger()
         {
             base.Trigger();
             Unsubscribe();

@@ -12,32 +12,20 @@ namespace Controllers
         [SerializeField] private NavMeshSurface _navmesh;
 
         private LocalPlayerController _playerController;
-        private GameObject _loc1floor, _loc2floor;
+        private GameObject _level;
 
         private IEnumerator Start()
         {
-            var locationHandleFloor1 = Addressables.LoadAssetAsync<GameObject>(GameConfigsContainer.instance.config.testFloor1);
+            var locationHandleFloor1 = Addressables.LoadAssetAsync<GameObject>(GameConfigsContainer.instance.config.debugLevel);
             var playerHandle = Addressables.LoadAssetAsync<GameObject>(GameConfigsContainer.instance.config.unit);
 
             while (!locationHandleFloor1.IsDone || !playerHandle.IsDone)
                 yield return null;
 
-            _loc1floor = Instantiate(locationHandleFloor1.Result, _environment);
+            _level = Instantiate(locationHandleFloor1.Result, _environment);
             SetUpPlayer(Instantiate(playerHandle.Result, _units).GetComponent<Unit>());
         
             _navmesh.BuildNavMesh();
-        }
-
-        public void MoveToSecondFloor(Transform point)
-        {
-            StartCoroutine(LoadingSecondFloor(point));
-        }
-    
-        public void MoveToFirstFloor(Transform point)
-        {
-            Destroy(_loc2floor);
-            _navmesh.BuildNavMesh();
-            _playerController.Teleport(point.position, point.rotation);
         }
 
         public Vector3 GetPlayerPos()
@@ -51,18 +39,6 @@ namespace Controllers
         {
             _playerController = new GameObject("Player Controller").AddComponent<LocalPlayerController>();
             _playerController.SetUnit(unit);
-        }
-
-        IEnumerator LoadingSecondFloor(Transform point)
-        {
-            var locationHandleFloor2 = Addressables.LoadAssetAsync<GameObject>(GameConfigsContainer.instance.config.testFloor2);
-        
-            while (!locationHandleFloor2.IsDone)
-                yield return null;
-        
-            _loc2floor = Instantiate(locationHandleFloor2.Result, _environment);
-            _navmesh.BuildNavMesh();
-            _playerController.Teleport(point.position, point.rotation);
         }
     }
 }

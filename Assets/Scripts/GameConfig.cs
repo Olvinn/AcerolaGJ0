@@ -6,7 +6,7 @@ public class GameConfig : ScriptableObject
 {
     // Addressables
     public AssetReferenceGameObject unit;
-    public AssetReferenceGameObject testFloor1, testFloor2;
+    public AssetReferenceGameObject debugLevel;
     public AssetReferenceGameObject hint;
     
     // Unit Configs

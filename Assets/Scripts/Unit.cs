@@ -1,18 +1,23 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(NavMeshAgent)), RequireComponent(typeof(Rigidbody))]
 public class Unit : MonoBehaviour
 {
     [SerializeField] private NavMeshAgent _agent;
+    [SerializeField] private Rigidbody _rigidbody;
     private Vector3 _cachedMovDir;
+
+    private void FixedUpdate()
+    {
+        _rigidbody.velocity = Vector3.zero;
+        _rigidbody.angularVelocity = Vector3.zero;
+    }
 
     public void Move(Vector3 dir)
     {
-        if (dir.sqrMagnitude == 0)
-            return;
+        _agent.Move(_cachedMovDir * Time.deltaTime);
         _cachedMovDir = dir;
-        _agent.Move(dir * Time.deltaTime);
     }
 
     public void Look(Vector3 dir)
@@ -38,5 +43,6 @@ public class Unit : MonoBehaviour
     private void Reset()
     {
         _agent = GetComponent<NavMeshAgent>();
+        _rigidbody = GetComponent<Rigidbody>();
     }
 }
