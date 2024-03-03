@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -37,6 +36,7 @@ namespace Controllers
 
         public void Die()
         {
+            StopAllCoroutines();
             Destroy(_unit.gameObject);
             Destroy(gameObject);
         }

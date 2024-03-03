@@ -27,6 +27,7 @@ public class LocalPlayerController : MonoBehaviour
         _unit = unit;
         _unit.onTriggerEnter += SubscribeOnInput;
         _unit.onTriggerExit += UnsubscribeOnInput;
+        _unit.onDamage += TakeDamage;
     }
 
     public void Teleport(Vector3 pos, Quaternion rot)
@@ -35,6 +36,12 @@ public class LocalPlayerController : MonoBehaviour
     }
 
     public Vector3 GetPos() => _unit.transform.position;
+
+    public void TakeDamage()
+    {
+        CameraController.instance.Shake(GameConfigsContainer.instance.config.damageCameraShakingMagnitude, 
+            GameConfigsContainer.instance.config.damageCameraShakingDuration);
+    }
     
     private void SubscribeOnInput(ExposedTrigger trigger)
     {

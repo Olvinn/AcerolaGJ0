@@ -21,6 +21,8 @@ public class GameConfig : ScriptableObject
     
     //Camera Configs
     [Space(10)] public float cameraLerpSpeed = 10;
+    public float damageCameraShakingMagnitude = 1.5f;
+    public float damageCameraShakingDuration = .35f;
     
     //World Configs
     [Space(10)] public Color mainUseColor;
