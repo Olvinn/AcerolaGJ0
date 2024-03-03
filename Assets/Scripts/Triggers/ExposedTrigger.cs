@@ -1,4 +1,3 @@
-using Controllers;
 using UnityEngine;
 
 namespace Triggers
@@ -6,36 +5,26 @@ namespace Triggers
     [RequireComponent(typeof(Collider))]
     public sealed class ExposedTrigger : TriggerBase
     {
+        public string hintText;
         [SerializeField] private Switcher _switcher;
-        [SerializeField] private string _hintText;
-        private int _cachedHintKey;
         
         private void OnTriggerEnter(Collider other)
         {
-            SubscribeOnInput();
+            Unit unit;
+            if (other.gameObject.TryGetComponent(out unit))
+                unit.TriggerInter(this);
         }
 
         private void OnTriggerExit(Collider other)
         {
-            Unsubscribe();
+            Unit unit;
+            if (other.gameObject.TryGetComponent(out unit))
+                unit.TriggerExit(this);
         }
 
-        private void SubscribeOnInput()
-        {
-            InputController.instance.onInteract += Trigger;
-            _cachedHintKey = UIController.instance.ShowHint(GameConfigsContainer.instance.config.useColor, _hintText, transform.position + Vector3.up);
-        }
-
-        private void Unsubscribe()
-        {
-            InputController.instance.onInteract -= Trigger;
-            UIController.instance.HideHint(_cachedHintKey);
-        }
-
-        protected override void Trigger()
+        public override void Trigger()
         {
             base.Trigger();
-            Unsubscribe();
             if (_switcher)
                 _switcher.Switch();
         }

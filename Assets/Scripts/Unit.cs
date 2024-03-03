@@ -1,5 +1,6 @@
 using System;
 using Controllers;
+using Triggers;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,7 +8,8 @@ using UnityEngine.AI;
 public class Unit : MonoBehaviour
 {
     public Action<ContactPoint[]> onCollide;
-    
+    public event Action<ExposedTrigger> onTriggerEnter, onTriggerExit;
+
     [SerializeField] private NavMeshAgent _agent;
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private LayerMask _shootingLayer;
@@ -53,6 +55,16 @@ public class Unit : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(_cachedMovDir),
                 Time.deltaTime * GameConfigsContainer.instance.config.playerAngularSpeed);
         }
+    }
+
+    public void TriggerInter(ExposedTrigger trigger)
+    {
+        onTriggerEnter?.Invoke(trigger);
+    }
+
+    public void TriggerExit(ExposedTrigger trigger)
+    {
+        onTriggerExit?.Invoke(trigger);
     }
 
     public void Teleport(Vector3 pos, Quaternion rot)

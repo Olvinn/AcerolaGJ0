@@ -23,5 +23,6 @@ public class GameConfig : ScriptableObject
     [Space(10)] public float cameraLerpSpeed = 10;
     
     //World Configs
-    [Space(10)] public Color useColor;
+    [Space(10)] public Color mainUseColor;
+    public Color secondaryUseColor;
 }

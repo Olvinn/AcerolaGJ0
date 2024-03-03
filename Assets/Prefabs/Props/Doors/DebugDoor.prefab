@@ -440,8 +440,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf63564ff37180c4599b1983855b9495, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hintText: Open/Close
   _switcher: {fileID: 7929931037037980628}
-  _hintText: Open/Close
 --- !u!114 &7929931037037980628
 MonoBehaviour:
   m_ObjectHideFlags: 0

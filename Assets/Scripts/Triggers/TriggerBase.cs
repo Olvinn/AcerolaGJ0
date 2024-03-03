@@ -9,6 +9,6 @@ namespace Triggers
             GetComponent<Collider>().isTrigger = true;
         }
 
-        protected virtual void Trigger() { }
+        public virtual void Trigger() { }
     }
 }

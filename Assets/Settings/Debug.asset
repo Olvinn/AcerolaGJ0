@@ -40,6 +40,7 @@ MonoBehaviour:
   playerSpeed: 10
   playerAngularSpeed: 720
   shootingDistance: 100
-  aiThinkingDelay: 0
+  aiThinkingDelay: 2
   cameraLerpSpeed: 10
-  useColor: {r: 0.48771805, g: 0.754717, b: 0.58225906, a: 1}
+  mainUseColor: {r: 0.13069598, g: 0.6115316, b: 0.8396226, a: 1}
+  secondaryUseColor: {r: 0.12941177, g: 0.8392157, b: 0.3190961, a: 1}
