@@ -12,7 +12,7 @@ namespace Controllers
         {
             var pos = GameController.instance.GetPlayerPos();
             _cameraHolder.position = Vector3.Lerp(_cameraHolder.position, pos, 
-                Time.unscaledDeltaTime * GameConfigsContainer.instance.config.cameraLerpSpeed);
+                Time.unscaledDeltaTime * GameConfigsAndSettings.instance.config.cameraLerpSpeed);
             _camera.LookAt(pos);
         }
 
@@ -24,7 +24,8 @@ namespace Controllers
 
         public void Shake(float magnitude, float time)
         {
-            StartCoroutine(Shaking(magnitude, time));
+            if (GameConfigsAndSettings.instance.settings.cameraShaking)
+                StartCoroutine(Shaking(magnitude, time));
         }
 
         IEnumerator Shaking(float magnitude, float time)

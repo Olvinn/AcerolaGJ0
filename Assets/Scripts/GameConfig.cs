@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-[CreateAssetMenu(menuName = "Configs/Game")]
+[CreateAssetMenu(menuName = "Game/Configs")]
 public class GameConfig : ScriptableObject
 {
     // Addressables

@@ -16,7 +16,7 @@ public class LocalPlayerController : MonoBehaviour
     void Update()
     {
         Vector3 mov = new Vector3(InputController.instance.move.x, 0, InputController.instance.move.y);
-        _unit.Move(mov.normalized * GameConfigsContainer.instance.config.playerSpeed);
+        _unit.Move(mov.normalized * GameConfigsAndSettings.instance.config.playerSpeed);
         Vector3 rot = new Vector3(InputController.instance.lookDirection.x, 0,
             InputController.instance.lookDirection.y);
         _unit.Look(rot);
@@ -39,8 +39,8 @@ public class LocalPlayerController : MonoBehaviour
 
     public void TakeDamage()
     {
-        CameraController.instance.Shake(GameConfigsContainer.instance.config.damageCameraShakingMagnitude, 
-            GameConfigsContainer.instance.config.damageCameraShakingDuration);
+        CameraController.instance.Shake(GameConfigsAndSettings.instance.config.damageCameraShakingMagnitude, 
+            GameConfigsAndSettings.instance.config.damageCameraShakingDuration);
     }
     
     private void SubscribeOnInput(ExposedTrigger trigger)
@@ -48,7 +48,7 @@ public class LocalPlayerController : MonoBehaviour
         if (_mainInteraction == null)
         {
             InputController.instance.onMainInteract += trigger.Trigger;
-            _cachedMainHint = UIController.instance.ShowHint(GameConfigsContainer.instance.config.mainUseColor,
+            _cachedMainHint = UIController.instance.ShowHint(GameConfigsAndSettings.instance.config.mainUseColor,
                 trigger.hintText,
                 trigger.transform.position + Vector3.up);
             _mainInteraction = trigger;
@@ -56,7 +56,7 @@ public class LocalPlayerController : MonoBehaviour
         else
         {
             InputController.instance.onSecondaryInteract += trigger.Trigger;
-            _cachedSecondaryHint = UIController.instance.ShowHint(GameConfigsContainer.instance.config.secondaryUseColor,
+            _cachedSecondaryHint = UIController.instance.ShowHint(GameConfigsAndSettings.instance.config.secondaryUseColor,
                 trigger.hintText,
                 trigger.transform.position + Vector3.up);
             _secondaryInteraction = trigger;

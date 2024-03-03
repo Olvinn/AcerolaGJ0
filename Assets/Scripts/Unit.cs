@@ -50,12 +50,12 @@ public class Unit : MonoBehaviour
         if (dir.sqrMagnitude != 0)
         {
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(dir),
-                Time.deltaTime * GameConfigsContainer.instance.config.playerAngularSpeed);
+                Time.deltaTime * GameConfigsAndSettings.instance.config.playerAngularSpeed);
         }
         else if (_cachedMovDir.sqrMagnitude != 0)
         {
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(_cachedMovDir),
-                Time.deltaTime * GameConfigsContainer.instance.config.playerAngularSpeed);
+                Time.deltaTime * GameConfigsAndSettings.instance.config.playerAngularSpeed);
         }
     }
 
@@ -80,7 +80,7 @@ public class Unit : MonoBehaviour
         Ray ray = new Ray(transform.position + Vector3.up + transform.forward, 
             Quaternion.Euler(Random.Range(-5f,5f),Random.Range(-5f,5f), 0) * transform.forward);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, GameConfigsContainer.instance.config.shootingDistance, _shootingLayer))
+        if (Physics.Raycast(ray, out hit, GameConfigsAndSettings.instance.config.shootingDistance, _shootingLayer))
         {
             VFX impact = VFXController.instance.GetEffect(EffectType.BulletImpact);
             impact.transform.position = hit.point;

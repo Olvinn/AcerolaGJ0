@@ -16,7 +16,7 @@ namespace Controllers
             _unusedVFX = new Dictionary<EffectType, List<VFX>>();
             _prefabs = new Dictionary<EffectType, VFX>();
 
-            var handler = Addressables.LoadAssetAsync<GameObject>(GameConfigsContainer.instance.config.bulletImpactVFX);
+            var handler = Addressables.LoadAssetAsync<GameObject>(GameConfigsAndSettings.instance.config.bulletImpactVFX);
             while (!handler.IsDone)
                 yield return null;
             _prefabs.Add(EffectType.BulletImpact, handler.Result.GetComponent<VFX>());

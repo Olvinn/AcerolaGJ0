@@ -17,9 +17,9 @@ namespace Controllers
 
         private IEnumerator Start()
         {
-            var locationHandleFloor1 = Addressables.LoadAssetAsync<GameObject>(GameConfigsContainer.instance.config.debugLevel);
-            var playerHandle = Addressables.LoadAssetAsync<GameObject>(GameConfigsContainer.instance.config.playerUnit);
-            var enemyHandle = Addressables.LoadAssetAsync<GameObject>(GameConfigsContainer.instance.config.enemyUnit);
+            var locationHandleFloor1 = Addressables.LoadAssetAsync<GameObject>(GameConfigsAndSettings.instance.config.debugLevel);
+            var playerHandle = Addressables.LoadAssetAsync<GameObject>(GameConfigsAndSettings.instance.config.playerUnit);
+            var enemyHandle = Addressables.LoadAssetAsync<GameObject>(GameConfigsAndSettings.instance.config.enemyUnit);
 
             while (!locationHandleFloor1.IsDone || !playerHandle.IsDone || !enemyHandle.IsDone)
                 yield return null;

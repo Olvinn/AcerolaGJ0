@@ -45,7 +45,7 @@ namespace Controllers
         {
             Ray ray = new Ray(_unit.transform.position + Vector3.up, GameController.instance.GetPlayerPos() - _unit.transform.position);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, GameConfigsContainer.instance.config.shootingDistance, _unitsLayer))
+            if (Physics.Raycast(ray, out hit, GameConfigsAndSettings.instance.config.shootingDistance, _unitsLayer))
             {
                 if (Vector3.Distance(GameController.instance.GetPlayerPos(), hit.point + Vector3.down) < 2)
                     _playerFound = true;
@@ -63,7 +63,7 @@ namespace Controllers
 
         IEnumerator Thinking()
         {
-            yield return new WaitForSeconds(GameConfigsContainer.instance.config.aiThinkingDelay);
+            yield return new WaitForSeconds(GameConfigsAndSettings.instance.config.aiThinkingDelay);
             FindPlayer();
             Move();
             if (_playerFound)

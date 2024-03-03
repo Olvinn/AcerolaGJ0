@@ -167,7 +167,7 @@ GameObject:
   - component: {fileID: 236878821}
   - component: {fileID: 236878822}
   m_Layer: 0
-  m_Name: Config Container
+  m_Name: Configs and Settings Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -201,6 +201,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: c337a1780f7404e49ae61eade391c507, type: 2}
+  settings: {fileID: 11400000, guid: d35d1f97a752d214e8dbfc170a9dc521, type: 2}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,7 +20,7 @@ namespace Controllers
             _unusedHints = new List<Hint>();
             _hintsInUse = new Dictionary<int, Hint>();
 
-            var handler = Addressables.LoadAssetAsync<GameObject>(GameConfigsContainer.instance.config.hint);
+            var handler = Addressables.LoadAssetAsync<GameObject>(GameConfigsAndSettings.instance.config.hint);
             while (!handler.IsDone)
                 yield return null;
             _hintPrefab = handler.Result;
