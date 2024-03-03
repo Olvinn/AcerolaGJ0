@@ -1,4 +1,5 @@
 using System.Collections;
+using Units;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -6,6 +7,7 @@ namespace Controllers
 {
     public class AIController : MonoBehaviour
     {
+        private UnitModel _model;
         private Unit _unit;
         [SerializeField] private bool _playerFound;
         private LayerMask _unitsLayer;
@@ -27,11 +29,23 @@ namespace Controllers
             _unit.MoveTo((_unit.transform.position - contacts[0].point).normalized * 5);
         }
 
-        public void SetUnit(Unit unit)
+        public void SetUnit(Unit unit, UnitModel model)
         {
             _unit = unit;
             _unit.onCollide = OnCollision;
-            _unit.onDamage = Die;
+            _unit.onDamage = TakeDamage;
+            _model = model;
+            _model = model;
+            _model.onDead += Die;
+        }
+        
+        public void TakeDamage(Damage damage)
+        {
+            if (_model.TakeDamage(damage))
+            {
+                CameraController.instance.Shake(GameConfigsAndSettings.instance.config.damageCameraShakingMagnitude,
+                    GameConfigsAndSettings.instance.config.damageCameraShakingDuration);
+            }
         }
 
         public void Die()
@@ -39,6 +53,11 @@ namespace Controllers
             StopAllCoroutines();
             Destroy(_unit.gameObject);
             Destroy(gameObject);
+        }
+        
+        public void Shoot()
+        {
+            _unit.Shoot(new Damage() { value = _model.attackDamage, from = _model });
         }
 
         private void FindPlayer()
@@ -63,11 +82,11 @@ namespace Controllers
 
         IEnumerator Thinking()
         {
-            yield return new WaitForSeconds(GameConfigsAndSettings.instance.config.aiThinkingDelay);
+            yield return new WaitForSeconds(GameConfigsAndSettings.instance.config.aiThinkingDelay + Random.Range(-1f, 1f));
             FindPlayer();
             Move();
             if (_playerFound)
-                _unit.Shoot();
+                Shoot();
             StartCoroutine(Thinking());
         }
     }

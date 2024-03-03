@@ -1,4 +1,5 @@
 using System.Collections;
+using Units;
 using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -44,7 +45,8 @@ namespace Controllers
         {
             _playerController = new GameObject("Player Controller").AddComponent<LocalPlayerController>();
             _playerController.transform.SetParent(_players);
-            _playerController.SetUnit(unit);
+            UnitModel model = new UnitModel(100, 25, Team.Player);
+            _playerController.SetUnit(unit, model);
         }
 
         private void SpawnEnemies()
@@ -56,7 +58,8 @@ namespace Controllers
                 enemy.transform.SetParent(_players);
                 var unit = Instantiate(_enemyPrefab, _units).GetComponent<Unit>();
                 unit.Teleport(pos.transform.position, pos.transform.rotation);
-                enemy.SetUnit(unit);
+                UnitModel model = new UnitModel(20, 5, Team.Aberrations);
+                enemy.SetUnit(unit, model);
             }
         }
     }

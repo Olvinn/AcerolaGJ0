@@ -1,19 +1,21 @@
 using Controllers;
 using Triggers;
+using Units;
 using UnityEngine;
 
 public class LocalPlayerController : MonoBehaviour
 {
+    private UnitModel _model;
     private Unit _unit;
     private TriggerBase _mainInteraction, _secondaryInteraction;
     private int _cachedMainHint, _cachedSecondaryHint;
 
     private void Start()
     {
-        InputController.instance.onShoot = _unit.Shoot;
+        InputController.instance.onShoot = Shoot;
     }
 
-    void Update()
+    private void Update()
     {
         Vector3 mov = new Vector3(InputController.instance.move.x, 0, InputController.instance.move.y);
         _unit.Move(mov.normalized * GameConfigsAndSettings.instance.config.playerSpeed);
@@ -22,12 +24,14 @@ public class LocalPlayerController : MonoBehaviour
         _unit.Look(rot);
     }
 
-    public void SetUnit(Unit unit)
+    public void SetUnit(Unit unit, UnitModel model)
     {
         _unit = unit;
         _unit.onTriggerEnter += SubscribeOnInput;
         _unit.onTriggerExit += UnsubscribeOnInput;
         _unit.onDamage += TakeDamage;
+        _model = model;
+        _model.onDead += Die;
     }
 
     public void Teleport(Vector3 pos, Quaternion rot)
@@ -37,10 +41,13 @@ public class LocalPlayerController : MonoBehaviour
 
     public Vector3 GetPos() => _unit.transform.position;
 
-    public void TakeDamage()
+    public void TakeDamage(Damage damage)
     {
-        CameraController.instance.Shake(GameConfigsAndSettings.instance.config.damageCameraShakingMagnitude, 
-            GameConfigsAndSettings.instance.config.damageCameraShakingDuration);
+        if (_model.TakeDamage(damage))
+        {
+            CameraController.instance.Shake(GameConfigsAndSettings.instance.config.damageCameraShakingMagnitude,
+                GameConfigsAndSettings.instance.config.damageCameraShakingDuration);
+        }
     }
     
     private void SubscribeOnInput(ExposedTrigger trigger)
@@ -77,5 +84,15 @@ public class LocalPlayerController : MonoBehaviour
             UIController.instance.HideHint(_cachedSecondaryHint);
             _secondaryInteraction = null;
         }
+    }
+
+    public void Shoot()
+    {
+        _unit.Shoot(new Damage() { value = _model.attackDamage, from = _model });
+    }
+
+    public void Die()
+    {
+        
     }
 }
