@@ -1369,7 +1369,7 @@ PrefabInstance:
     - target: {fileID: 3423512410816973959, guid: 12986cf1c0e48564698b46c106270f85,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 3423512410816973959, guid: 12986cf1c0e48564698b46c106270f85,
         type: 3}
@@ -1431,10 +1431,35 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7124608661275960120, guid: 12986cf1c0e48564698b46c106270f85,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 26.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 7124608661275960120, guid: 12986cf1c0e48564698b46c106270f85,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7124608661275960120, guid: 12986cf1c0e48564698b46c106270f85,
+        type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7655311979335804914, guid: 12986cf1c0e48564698b46c106270f85,
         type: 3}
       propertyPath: m_Name
       value: Hp bar
+      objectReference: {fileID: 0}
+    - target: {fileID: 9089247775088549409, guid: 12986cf1c0e48564698b46c106270f85,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 9089247775088549409, guid: 12986cf1c0e48564698b46c106270f85,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

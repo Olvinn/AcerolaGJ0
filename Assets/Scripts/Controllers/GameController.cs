@@ -53,7 +53,7 @@ namespace Controllers
         {
             for (int i = 0; i < 5; i++)
             {
-                var pos = Point.points[i % Point.points.Count];
+                var pos = Point.points[PointType.Spawn][i % Point.points[PointType.Spawn].Count];
                 var enemy = new GameObject("Enemy").AddComponent<AIController>();
                 enemy.transform.SetParent(_players);
                 var unit = Instantiate(_enemyPrefab, _units).GetComponent<Unit>();
