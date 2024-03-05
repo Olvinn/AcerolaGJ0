@@ -1,5 +1,4 @@
 using System;
-using System.Text;
 using Controllers;
 using Triggers;
 using UnityEngine;
@@ -80,7 +79,7 @@ namespace Units
 
         public void Shoot(Damage damage)
         {
-            Ray ray = new Ray(transform.position + Vector3.up + transform.forward, 
+            Ray ray = new Ray(transform.position + Vector3.up, 
                 Quaternion.Euler(Random.Range(-5f,5f),Random.Range(-5f,5f), 0) * transform.forward);
             RaycastHit[] hits;
             hits = Physics.RaycastAll(ray, GameConfigsAndSettings.instance.config.shootingDistance, _shootingLayer);

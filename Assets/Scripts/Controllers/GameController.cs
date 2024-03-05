@@ -27,11 +27,14 @@ namespace Controllers
 
             _level = Instantiate(locationHandleFloor1.Result, _environment);
             _enemyPrefab = enemyHandle.Result;
+        
+            _navmesh.BuildNavMesh();
+            
+            yield return null;
+            
             SetUpPlayer(Instantiate(playerHandle.Result, _units).GetComponent<Unit>());
 
             SpawnEnemies();
-        
-            _navmesh.BuildNavMesh();
         }
 
         public Vector3 GetPlayerPos()
@@ -39,6 +42,11 @@ namespace Controllers
             if (_playerController)
                 return _playerController.GetPos();
             return Vector3.zero;
+        }
+
+        public bool IsPlayer(Unit unit)
+        {
+            return _playerController.GetView() == unit;
         }
 
         private void SetUpPlayer(Unit unit)
@@ -53,7 +61,7 @@ namespace Controllers
         {
             for (int i = 0; i < 5; i++)
             {
-                var pos = Point.points[PointType.Spawn][i % Point.points[PointType.Spawn].Count];
+                var pos = Point.GetPoint(PointType.Spawn)[i % Point.GetPoint(PointType.Spawn).Count];
                 var enemy = new GameObject("Enemy").AddComponent<AIController>();
                 enemy.transform.SetParent(_players);
                 var unit = Instantiate(_enemyPrefab, _units).GetComponent<Unit>();

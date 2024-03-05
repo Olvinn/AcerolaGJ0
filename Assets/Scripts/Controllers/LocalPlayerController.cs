@@ -34,6 +34,11 @@ public class LocalPlayerController : MonoBehaviour
         _model.onDead += Die;
     }
 
+    public Unit GetView()
+    {
+        return _unit;
+    }
+
     public void Teleport(Vector3 pos, Quaternion rot)
     {
         _unit.Teleport(pos, rot);
