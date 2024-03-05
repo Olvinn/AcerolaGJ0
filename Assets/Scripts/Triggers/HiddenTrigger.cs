@@ -28,7 +28,7 @@ namespace Triggers
             {
                 if (_playerOnly && GameController.instance.IsPlayer(unit))
                     if (_switcher)
-                        _switcher.On();
+                        _switcher.Off();
             }
         }
         
