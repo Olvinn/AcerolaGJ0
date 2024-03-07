@@ -22,7 +22,11 @@ namespace Units
 
         private void Update()
         {
+            if (!_animator)
+                return;
             _animator.SetFloat("Speed", _cachedMovDir.magnitude * _agent.speed);
+            _animator.SetFloat("X", (transform.worldToLocalMatrix * (_cachedMovDir * _agent.speed)).x);
+            _animator.SetFloat("Y", (transform.worldToLocalMatrix * (_cachedMovDir * _agent.speed)).z);
         }
 
         private void FixedUpdate()
@@ -44,8 +48,8 @@ namespace Units
 
         public void Move(Vector3 dir)
         {
-            _agent.Move(_cachedMovDir * Time.deltaTime);
-            _cachedMovDir = dir;
+            _cachedMovDir = Vector3.Lerp(_cachedMovDir, dir, Time.deltaTime * _agent.acceleration);
+            _agent.Move(_cachedMovDir * (Time.deltaTime * _agent.speed));
         }
 
         public void MoveTo(Vector3 pos)
@@ -57,11 +61,15 @@ namespace Units
         {
             if (dir.sqrMagnitude != 0)
             {
+                if (_animator)
+                    _animator.SetBool("Aiming", true);
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(dir),
                     Time.deltaTime * GameConfigsAndSettings.instance.config.playerAngularSpeed);
             }
             else if (_cachedMovDir.sqrMagnitude != 0)
             {
+                if (_animator)
+                    _animator.SetBool("False", true);
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(_cachedMovDir),
                     Time.deltaTime * GameConfigsAndSettings.instance.config.playerAngularSpeed);
             }
