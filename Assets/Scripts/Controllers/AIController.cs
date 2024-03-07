@@ -24,6 +24,7 @@ namespace Controllers
 
         private void Update()
         {
+            _unit.Aim(_playerFound);
             if (_playerFound)
                 _unit.Look(GameController.instance.GetPlayerPos() - _unit.transform.position);
         }

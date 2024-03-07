@@ -17,16 +17,18 @@ namespace Units
         [SerializeField] private NavMeshAgent _agent;
         [SerializeField] private Rigidbody _rigidbody;
         [SerializeField] private LayerMask _shootingLayer;
-        [SerializeField] private Animator _animator;
+        [SerializeField] private AnimationController _animator;
         private Vector3 _cachedMovDir;
+        private bool _cachedAim;
 
         private void Update()
         {
             if (!_animator)
                 return;
-            _animator.SetFloat("Speed", _cachedMovDir.magnitude * _agent.speed);
-            _animator.SetFloat("X", (transform.worldToLocalMatrix * (_cachedMovDir * _agent.speed)).x);
-            _animator.SetFloat("Y", (transform.worldToLocalMatrix * (_cachedMovDir * _agent.speed)).z);
+            var locMov = transform.worldToLocalMatrix * (_cachedMovDir * _agent.speed);
+            _animator.SetFloat("Speed", locMov.magnitude);
+            _animator.SetFloat("X", locMov.x);
+            _animator.SetFloat("Y", locMov.z);
         }
 
         private void FixedUpdate()
@@ -59,20 +61,26 @@ namespace Units
 
         public void Look(Vector3 dir)
         {
-            if (dir.sqrMagnitude != 0)
+            if (dir.sqrMagnitude == 0)
+                return;
+            
+            if (_cachedAim)
             {
-                if (_animator)
-                    _animator.SetBool("Aiming", true);
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(dir),
                     Time.deltaTime * GameConfigsAndSettings.instance.config.playerAngularSpeed);
             }
-            else if (_cachedMovDir.sqrMagnitude != 0)
+            else
             {
-                if (_animator)
-                    _animator.SetBool("False", true);
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(_cachedMovDir),
                     Time.deltaTime * GameConfigsAndSettings.instance.config.playerAngularSpeed);
             }
+        }
+
+        public void Aim(bool value)
+        {
+            if (_animator)
+                _animator.SetBool("Aiming", value);
+            _cachedAim = value;
         }
 
         public void TriggerInter(ExposedTrigger trigger)

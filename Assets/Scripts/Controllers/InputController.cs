@@ -8,6 +8,7 @@ namespace Controllers
     {
         public Vector2 move;
         public Vector2 lookDirection;
+        public Action<bool> aim;
         public Action onMainInteract, onSecondaryInteract, onShoot;
 
         public void OnMove(InputValue value)
@@ -29,6 +30,7 @@ namespace Controllers
             lookDirection = value.Get<Vector2>();
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+            aim.Invoke(lookDirection.sqrMagnitude != 0);
         }
 
         public void OnInteract(InputValue value)
@@ -44,6 +46,11 @@ namespace Controllers
         public void OnFire(InputValue value)
         {
             onShoot?.Invoke();
+        }
+
+        public void OnAim(InputValue value)
+        {
+            aim.Invoke(value.isPressed);
         }
     }
 }

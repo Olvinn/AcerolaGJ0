@@ -21,6 +21,7 @@ public class LocalPlayerController : MonoBehaviour
         _unit.Move(mov.normalized * GameConfigsAndSettings.instance.config.playerSpeed);
         Vector3 rot = new Vector3(InputController.instance.lookDirection.x, 0,
             InputController.instance.lookDirection.y);
+        InputController.instance.aim = _unit.Aim;
         _unit.Look(rot);
     }
 
