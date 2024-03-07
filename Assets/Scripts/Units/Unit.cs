@@ -17,7 +17,13 @@ namespace Units
         [SerializeField] private NavMeshAgent _agent;
         [SerializeField] private Rigidbody _rigidbody;
         [SerializeField] private LayerMask _shootingLayer;
+        [SerializeField] private Animator _animator;
         private Vector3 _cachedMovDir;
+
+        private void Update()
+        {
+            _animator.SetFloat("Speed", _cachedMovDir.magnitude * _agent.speed);
+        }
 
         private void FixedUpdate()
         {
