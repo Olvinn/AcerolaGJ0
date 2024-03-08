@@ -1,9 +1,7 @@
-using System;
 using System.Collections;
 using Units;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering.VirtualTexturing;
 using Random = UnityEngine.Random;
 
 namespace Controllers
@@ -43,6 +41,8 @@ namespace Controllers
             _model = model;
             _model = model;
             _model.onDead += Die;
+            _unit.SetUp(GameConfigsAndSettings.instance.config.playerSpeed, GameConfigsAndSettings.instance.config.playerSpeed * .5f,
+                GameConfigsAndSettings.instance.config.playerAngularSpeed);
         }
         
         public void TakeDamage(Damage damage)

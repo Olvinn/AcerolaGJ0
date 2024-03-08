@@ -20,12 +20,17 @@ namespace Units
         [SerializeField] private AnimationController _animator;
         private Vector3 _cachedMovDir;
         private bool _cachedAim;
+        private float _speed, _aimSpeed, _angularSpeed;
 
         private void Update()
         {
             if (!_animator)
                 return;
-            var locMov = transform.worldToLocalMatrix * (_cachedMovDir * _agent.speed);
+            Vector3 locMov;
+            if (_agent.hasPath)
+                locMov = transform.worldToLocalMatrix * _agent.velocity;
+            else
+                locMov = transform.worldToLocalMatrix * _cachedMovDir;
             _animator.SetFloat("Speed", locMov.magnitude);
             _animator.SetFloat("X", locMov.x);
             _animator.SetFloat("Y", locMov.z);
@@ -48,31 +53,40 @@ namespace Units
             onCollide?.Invoke(collision.contacts);
         }
 
+        public void SetUp(float speed, float aimSpeed, float angularSpeed)
+        {
+            _agent.speed = _speed = speed;
+            _agent.angularSpeed = _angularSpeed = angularSpeed;
+            _aimSpeed = aimSpeed;
+        }
+
         public void Move(Vector3 dir)
         {
-            _cachedMovDir = Vector3.Lerp(_cachedMovDir, dir, Time.deltaTime * _agent.acceleration);
-            _agent.Move(_cachedMovDir * (Time.deltaTime * _agent.speed));
+            _cachedMovDir = Vector3.Lerp(_cachedMovDir, dir * (_cachedAim ? _aimSpeed : _speed), Time.deltaTime * _agent.acceleration);
+            _agent.Move(_cachedMovDir * Time.deltaTime);
         }
 
         public void MoveTo(Vector3 pos)
         {
+            _agent.speed = _cachedAim ? _aimSpeed : _speed;
             _agent.SetDestination(pos);
         }
 
         public void Look(Vector3 dir)
         {
-            if (dir.sqrMagnitude == 0)
-                return;
-            
             if (_cachedAim)
             {
+                if (dir.sqrMagnitude == 0)
+                    return;
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(dir),
-                    Time.deltaTime * GameConfigsAndSettings.instance.config.playerAngularSpeed);
+                    Time.deltaTime * _angularSpeed);
             }
             else
             {
+                if (_cachedMovDir.sqrMagnitude == 0)
+                    return;
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(_cachedMovDir),
-                    Time.deltaTime * GameConfigsAndSettings.instance.config.playerAngularSpeed);
+                    Time.deltaTime * _angularSpeed);
             }
         }
 
@@ -101,6 +115,9 @@ namespace Units
 
         public void Shoot(Damage damage)
         {
+            if (!_cachedAim)
+                return;
+            
             Ray ray = new Ray(transform.position + Vector3.up, 
                 Quaternion.Euler(Random.Range(-5f,5f),Random.Range(-5f,5f), 0) * transform.forward);
             RaycastHit[] hits;
