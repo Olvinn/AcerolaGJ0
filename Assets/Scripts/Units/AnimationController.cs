@@ -19,5 +19,6 @@ namespace Units
 
         public void SetFloat(string key, float value) => _animator.SetFloat(key, value);
         public void SetBool(string key, bool value) => _animator.SetBool(key, value);
+        public void SetTrigger(string key) => _animator.SetTrigger(key);
     }
 }

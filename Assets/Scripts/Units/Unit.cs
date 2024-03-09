@@ -18,6 +18,7 @@ namespace Units
         [SerializeField] private Rigidbody _rigidbody;
         [SerializeField] private LayerMask _shootingLayer;
         [SerializeField] private AnimationController _animator;
+        [SerializeField] private VFX _shootVFX;
         private Vector3 _cachedMovDir;
         private bool _cachedAim;
         private float _speed, _aimSpeed, _angularSpeed;
@@ -117,6 +118,13 @@ namespace Units
         {
             if (!_cachedAim)
                 return;
+            
+            if (_shootVFX)
+                _shootVFX.StartEffect();
+            if (_animator)
+                    _animator.SetTrigger("Shoot");
+            
+            CameraController.instance.Shake(.5f, .1f);
             
             Ray ray = new Ray(transform.position + Vector3.up, 
                 Quaternion.Euler(Random.Range(-5f,5f),Random.Range(-5f,5f), 0) * transform.forward);
