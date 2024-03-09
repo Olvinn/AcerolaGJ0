@@ -37,6 +37,11 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
+  bulletTrailVFX:
+    m_AssetGUID: 91c7da012d9fa6c449ece7f583e1ad4b
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   playerSpeed: 10
   playerAngularSpeed: 720
   shootingDistance: 100

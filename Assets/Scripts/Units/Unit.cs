@@ -114,17 +114,15 @@ namespace Units
             transform.rotation = rot;
         }
 
-        public void Shoot(Damage damage)
+        public bool Shoot(Damage damage)
         {
             if (!_cachedAim)
-                return;
+                return false;
             
             if (_shootVFX)
                 _shootVFX.StartEffect();
             if (_animator)
                     _animator.SetTrigger("Shoot");
-            
-            CameraController.instance.Shake(.5f, .1f);
             
             Ray ray = new Ray(transform.position + Vector3.up, 
                 Quaternion.Euler(Random.Range(-5f,5f),Random.Range(-5f,5f), 0) * transform.forward);
@@ -137,12 +135,18 @@ namespace Units
             {
                 VFX impact = VFXController.instance.GetEffect(EffectType.BulletImpact);
                 impact.transform.position = hit.point;
+                impact.transform.rotation = Quaternion.LookRotation(ray.direction);
                 Unit unit;
                 if (hit.collider.gameObject.TryGetComponent(out unit))
                     unit.TakeDamage(damage);
                 else
                     break;
             }
+
+            if (hits.Length > 0)
+                VFXController.instance.GetEffect(EffectType.BulletTrail).StartEffect(new []{ray.origin, hits[0].point});
+
+            return true;
         }
 
         public void TakeDamage(Damage damage)

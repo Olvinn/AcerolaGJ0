@@ -53,6 +53,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - location
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 91c7da012d9fa6c449ece7f583e1ad4b
+    m_Address: vfx_BulletTrail
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - vfx
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 9ab05612a90aa1b47a3afea76fcae5cc, type: 2}
   m_SchemaSet:

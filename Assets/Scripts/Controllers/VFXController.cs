@@ -16,12 +16,15 @@ namespace Controllers
             _unusedVFX = new Dictionary<EffectType, List<VFX>>();
             _prefabs = new Dictionary<EffectType, VFX>();
 
-            var handler = Addressables.LoadAssetAsync<GameObject>(GameConfigsAndSettings.instance.config.bulletImpactVFX);
-            while (!handler.IsDone)
+            var bulletImpactHandler = Addressables.LoadAssetAsync<GameObject>(GameConfigsAndSettings.instance.config.bulletImpactVFX);
+            var bulletTrailHandler = Addressables.LoadAssetAsync<GameObject>(GameConfigsAndSettings.instance.config.bulletTrailVFX);
+            while (!bulletImpactHandler.IsDone || !bulletTrailHandler.IsDone)
                 yield return null;
-            _prefabs.Add(EffectType.BulletImpact, handler.Result.GetComponent<VFX>());
+            _prefabs.Add(EffectType.BulletImpact, bulletImpactHandler.Result.GetComponent<VFX>());
+            _prefabs.Add(EffectType.BulletTrail, bulletTrailHandler.Result.GetComponent<VFX>());
         
             InstantiateVFX(EffectType.BulletImpact);
+            InstantiateVFX(EffectType.BulletTrail);
         }
 
         public VFX GetEffect(EffectType type)
@@ -54,5 +57,6 @@ namespace Controllers
     public enum EffectType
     {
         BulletImpact,
+        BulletTrail
     }
 }

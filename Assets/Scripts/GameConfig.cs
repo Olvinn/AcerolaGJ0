@@ -10,6 +10,7 @@ public class GameConfig : ScriptableObject
     public AssetReferenceGameObject debugLevel;
     public AssetReferenceGameObject hint;
     public AssetReferenceGameObject bulletImpactVFX;
+    public AssetReferenceGameObject bulletTrailVFX;
     
     // Unit Configs
     [Space(10)] public float playerSpeed = 50;

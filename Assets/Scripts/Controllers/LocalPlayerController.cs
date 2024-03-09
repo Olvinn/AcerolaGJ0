@@ -100,7 +100,8 @@ namespace Controllers
 
         public void Shoot()
         {
-            _unit.Shoot(new Damage() { value = _model.attackDamage, from = _model });
+            if (_unit.Shoot(new Damage() { value = _model.attackDamage, from = _model }))
+                CameraController.instance.Shake(.5f, .1f);
         }
 
         public void Die()
