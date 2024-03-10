@@ -23,6 +23,7 @@ namespace Controllers
             _unit.Move(mov);
             Vector3 rot = new Vector3(InputController.instance.lookDirection.x, 0,
                 InputController.instance.lookDirection.y);
+            CameraController.instance.SetOffset(rot, 5f);
             InputController.instance.aim = _unit.Aim;
             _unit.Look(rot);
         }

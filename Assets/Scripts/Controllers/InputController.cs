@@ -21,6 +21,8 @@ namespace Controllers
             var pos = value.Get<Vector2>();
             pos += new Vector2(Screen.width * .5f, Screen.height * .5f);
             lookDirection = -pos;
+            lookDirection.x /= Screen.width * .5f;
+            lookDirection.y /= Screen.height * .5f;
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
         }
