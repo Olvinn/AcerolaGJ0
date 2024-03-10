@@ -4,10 +4,8 @@ using UnityEngine;
 
 namespace Controllers
 {
-    public class LocalPlayerController : MonoBehaviour
+    public class LocalPlayerController : UnitController
     {
-        private UnitModel _model;
-        private Unit _unit;
         private TriggerBase _mainInteraction, _secondaryInteraction;
         private int _cachedMainHint, _cachedSecondaryHint;
 
@@ -30,29 +28,12 @@ namespace Controllers
 
         public void SetUnit(Unit unit, UnitModel model)
         {
-            _unit = unit;
+            base.SetUnit(unit, model);
             _unit.onTriggerEnter += SubscribeOnInput;
             _unit.onTriggerExit += UnsubscribeOnInput;
-            _unit.onDamage += TakeDamage;
-            _unit.SetUp(GameConfigsAndSettings.instance.config.playerSpeed, GameConfigsAndSettings.instance.config.playerSpeed * .5f,
-                GameConfigsAndSettings.instance.config.playerAngularSpeed);
-            _model = model;
-            _model.onDead += Die;
         }
 
-        public Unit GetView()
-        {
-            return _unit;
-        }
-
-        public void Teleport(Vector3 pos, Quaternion rot)
-        {
-            _unit.Teleport(pos, rot);
-        }
-
-        public Vector3 GetPos() => _unit.transform.position;
-
-        public void TakeDamage(Damage damage)
+        public override void TakeDamage(Damage damage)
         {
             if (_model.TakeDamage(damage))
             {
@@ -98,7 +79,7 @@ namespace Controllers
             }
         }
 
-        public void Shoot()
+        public override void Shoot()
         {
             if (_unit.Shoot(new Damage() { value = _model.attackDamage, from = _model }))
                 CameraController.instance.Shake(.5f, .1f);
@@ -106,7 +87,7 @@ namespace Controllers
 
         public void Die()
         {
-        
+            
         }
     }
 }

@@ -6,10 +6,8 @@ using Random = UnityEngine.Random;
 
 namespace Controllers
 {
-    public class AIController : MonoBehaviour
+    public class AIController : UnitController
     {
-        private UnitModel _model;
-        private Unit _unit;
         [SerializeField] private bool _playerFound;
         private LayerMask _unitsLayer;
         private Vector3 _playerLastSeenPos;
@@ -27,39 +25,16 @@ namespace Controllers
                 _unit.Look(GameController.instance.GetPlayerPos() - _unit.transform.position);
         }
 
+        public override void SetUnit(Unit unit, UnitModel model)
+        {
+            base.SetUnit(unit, model);
+            _unit.onCollide = OnCollision;
+        }
+
         private void OnCollision(ContactPoint[] contacts)
         {
             _unit.MoveTo((_unit.transform.position - contacts[0].point).normalized * 5);
             _playerFound = false;
-        }
-
-        public void SetUnit(Unit unit, UnitModel model)
-        {
-            _unit = unit;
-            _unit.onCollide = OnCollision;
-            _unit.onDamage = TakeDamage;
-            _model = model;
-            _model = model;
-            _model.onDead += Die;
-            _unit.SetUp(GameConfigsAndSettings.instance.config.playerSpeed, GameConfigsAndSettings.instance.config.playerSpeed * .5f,
-                GameConfigsAndSettings.instance.config.playerAngularSpeed);
-        }
-        
-        public void TakeDamage(Damage damage)
-        {
-            _model.TakeDamage(damage);
-        }
-
-        public void Die()
-        {
-            StopAllCoroutines();
-            Destroy(_unit.gameObject);
-            Destroy(gameObject);
-        }
-        
-        public void Shoot()
-        {
-            _unit.Shoot(new Damage() { value = _model.attackDamage, from = _model });
         }
 
         private bool FindPlayer()
