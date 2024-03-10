@@ -8,8 +8,8 @@ namespace Controllers
     {
         public Vector2 move;
         public Vector2 lookDirection;
-        public Action<bool> aim;
-        public Action onMainInteract, onSecondaryInteract, onShoot;
+        public Action<bool> aim, onShoot;
+        public Action onMainInteract, onSecondaryInteract;
 
         public void OnMove(InputValue value)
         {
@@ -45,7 +45,7 @@ namespace Controllers
 
         public void OnFire(InputValue value)
         {
-            onShoot?.Invoke();
+            onShoot?.Invoke(value.isPressed);
         }
 
         public void OnAim(InputValue value)

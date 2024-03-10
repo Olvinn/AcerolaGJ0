@@ -22,6 +22,7 @@ namespace Units
         private Vector3 _cachedMovDir;
         private bool _cachedAim;
         private float _speed, _aimSpeed, _angularSpeed;
+        private float _lastShotTime, _shotTimer;
 
         private void Update()
         {
@@ -54,11 +55,17 @@ namespace Units
             onCollide?.Invoke(collision.contacts);
         }
 
-        public void SetUp(float speed, float aimSpeed, float angularSpeed)
+        public void SetUpMobility(float speed, float aimSpeed, float angularSpeed)
         {
             _agent.speed = _speed = speed;
             _agent.angularSpeed = _angularSpeed = angularSpeed;
             _aimSpeed = aimSpeed;
+        }
+
+        public void SetUpFirepower(float rateOfFire)
+        {
+            _lastShotTime = Time.time;
+            _shotTimer = 1f / rateOfFire;
         }
 
         public void Move(Vector3 dir)
@@ -118,7 +125,12 @@ namespace Units
         {
             if (!_cachedAim)
                 return false;
-            
+
+            if (Time.time - _lastShotTime <= _shotTimer)
+                return false;
+
+            _lastShotTime = Time.time;
+
             if (_shootVFX)
                 _shootVFX.StartEffect();
             if (_animator)

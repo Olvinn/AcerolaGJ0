@@ -1,3 +1,4 @@
+using System;
 using Units;
 using UnityEngine;
 
@@ -7,7 +8,19 @@ namespace Controllers
     {
         protected UnitModel _model;
         protected Unit _unit;
-        
+        protected bool _isShooting;
+
+        protected virtual void Update()
+        {
+            if (_isShooting)
+                if (_unit.Shoot(new Damage() { value = _model.weapon.damage, from = _model })) ShootEffects();
+        }
+
+        protected virtual void ShootEffects()
+        {
+            
+        }
+
         public virtual void SetUnit(Unit unit, UnitModel model)
         {
             _unit = unit;
@@ -15,8 +28,8 @@ namespace Controllers
             _model = model;
             _model = model;
             _model.onDead += Die;
-            _unit.SetUp(GameConfigsAndSettings.instance.config.playerSpeed, GameConfigsAndSettings.instance.config.playerSpeed * .5f,
-                GameConfigsAndSettings.instance.config.playerAngularSpeed);
+            _unit.SetUpMobility(model.speed, model.aimSpeed, model.angularSpeed);
+            _unit.SetUpFirepower(model.weapon.rateOfFire);
         }
 
         public void Die()
@@ -31,9 +44,9 @@ namespace Controllers
             _model.TakeDamage(damage);
         }
         
-        public virtual void Shoot()
+        public virtual void Shoot(bool value)
         {
-            _unit.Shoot(new Damage() { value = _model.attackDamage, from = _model });
+            _isShooting = value;
         }
 
         public Unit GetView()

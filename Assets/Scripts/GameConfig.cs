@@ -13,8 +13,7 @@ public class GameConfig : ScriptableObject
     public AssetReferenceGameObject bulletTrailVFX;
     
     // Unit Configs
-    [Space(10)] public float playerSpeed = 50;
-    public float playerAngularSpeed = 720;
+    [Space(10)] 
     public float shootingDistance = 100;
     
     //AI configs

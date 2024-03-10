@@ -53,7 +53,8 @@ namespace Controllers
         {
             _playerController = new GameObject("Player Controller").AddComponent<LocalPlayerController>();
             _playerController.transform.SetParent(_players);
-            UnitModel model = new UnitModel(100, 25, Team.Player);
+            Weapon weapon = new Weapon(30, 5);
+            UnitModel model = new UnitModel(100, Team.Player, 1.5f, 5, 210, weapon);
             _playerController.SetUnit(unit, model);
         }
 
@@ -66,7 +67,8 @@ namespace Controllers
                 enemy.transform.SetParent(_players);
                 var unit = Instantiate(_enemyPrefab, _units).GetComponent<Unit>();
                 unit.Teleport(pos.transform.position, pos.transform.rotation);
-                UnitModel model = new UnitModel(20, 5, Team.Aberrations);
+                Weapon weapon = new Weapon(5, 2);
+                UnitModel model = new UnitModel(30, Team.Aberrations, 1, 3, 180, weapon);
                 enemy.SetUnit(unit, model);
             }
         }

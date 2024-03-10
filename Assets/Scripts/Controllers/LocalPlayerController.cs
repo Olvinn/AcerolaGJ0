@@ -14,8 +14,9 @@ namespace Controllers
             InputController.instance.onShoot = Shoot;
         }
 
-        private void Update()
+        protected override void Update()
         {
+            base.Update();
             Vector3 mov = new Vector3(InputController.instance.move.x, 0, InputController.instance.move.y);
             if (mov.magnitude > 1f)
                 mov.Normalize();
@@ -79,10 +80,9 @@ namespace Controllers
             }
         }
 
-        public override void Shoot()
+        protected override void ShootEffects()
         {
-            if (_unit.Shoot(new Damage() { value = _model.attackDamage, from = _model }))
-                CameraController.instance.Shake(.5f, .1f);
+            CameraController.instance.Shake(.5f, .1f);
         }
 
         public void Die()

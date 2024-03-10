@@ -18,8 +18,9 @@ namespace Controllers
             StartCoroutine(Thinking());
         }
 
-        private void Update()
+        protected override void Update()
         {
+            base.Update();
             _unit.Aim(_playerFound);
             if (_playerFound)
                 _unit.Look(GameController.instance.GetPlayerPos() - _unit.transform.position);
@@ -57,7 +58,10 @@ namespace Controllers
         private void Move()
         {
             if (_playerFound)
+            {
                 _unit.MoveTo(GameController.instance.GetPlayerPos());
+                _isShooting = true;
+            }
             else
                 _unit.MoveTo(_unit.transform.position + new Vector3(Random.Range(-10,10), 0, Random.Range(-10,10)));
         }
@@ -68,6 +72,7 @@ namespace Controllers
                 _unit.MoveTo(_playerLastSeenPos);
 
             _playerFound = false;
+            _isShooting = false;
         }
 
         IEnumerator Thinking()
@@ -75,9 +80,7 @@ namespace Controllers
             yield return new WaitForSeconds(GameConfigsAndSettings.instance.config.aiThinkingDelay + Random.Range(-1f, 1f));
             
             Move();
-            if (FindPlayer())
-                Shoot();
-            else
+            if (!FindPlayer())
                 CheckLastPlayerPos();
             
             StartCoroutine(Thinking());
