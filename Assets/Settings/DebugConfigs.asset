@@ -42,9 +42,7 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  playerSpeed: 10
-  playerAngularSpeed: 720
-  shootingDistance: 100
+  shootingDistance: 25
   aiThinkingDelay: 2
   cameraLerpSpeed: 10
   damageCameraShakingMagnitude: 1.5

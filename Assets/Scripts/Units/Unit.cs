@@ -157,6 +157,9 @@ namespace Units
 
             if (hits.Length > 0)
                 VFXController.instance.GetEffect(EffectType.BulletTrail).StartEffect(new []{ray.origin, hits[0].point});
+            else
+                VFXController.instance.GetEffect(EffectType.BulletTrail).StartEffect(new []{ray.origin, 
+                    ray.origin + ray.direction * GameConfigsAndSettings.instance.config.shootingDistance});
 
             return true;
         }
