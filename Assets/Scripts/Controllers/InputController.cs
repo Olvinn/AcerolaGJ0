@@ -8,9 +8,16 @@ namespace Controllers
     {
         public Vector2 move;
         public Vector2 lookDirection;
+        public Vector2 cursorPosistion;
         public Action<bool> aim, onShoot;
         public Action onMainInteract, onSecondaryInteract;
+        public bool isJoystick;
 
+        public void ShakeGamepad(float magnitude, float time)
+        {
+            Gamepad.current.SetMotorSpeeds(magnitude, time);
+        }
+        
         public void OnMove(InputValue value)
         {
             move = value.Get<Vector2>();
@@ -19,12 +26,14 @@ namespace Controllers
         public void OnLook(InputValue value)
         {
             var pos = value.Get<Vector2>();
+            cursorPosistion = -pos;
             pos += new Vector2(Screen.width * .5f, Screen.height * .5f);
             lookDirection = -pos;
             lookDirection.x /= Screen.width * .5f;
             lookDirection.y /= Screen.height * .5f;
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
+            isJoystick = false;
         }
         
         public void OnLookGamepad(InputValue value)
@@ -33,6 +42,7 @@ namespace Controllers
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
             aim.Invoke(lookDirection.sqrMagnitude != 0);
+            isJoystick = true;
         }
 
         public void OnInteract(InputValue value)

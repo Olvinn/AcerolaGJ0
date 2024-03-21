@@ -13,7 +13,7 @@ namespace Controllers
         protected virtual void Update()
         {
             if (_isShooting)
-                if (_unit.Shoot(new Damage() { value = _model.weapon.damage, from = _model })) ShootEffects();
+                if (_unit.Shoot(_model.weapon, _model)) ShootEffects();
         }
 
         protected virtual void ShootEffects()

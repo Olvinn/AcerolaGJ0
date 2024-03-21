@@ -121,7 +121,7 @@ namespace Units
             transform.rotation = rot;
         }
 
-        public bool Shoot(Damage damage)
+        public bool Shoot(Weapon weapon, UnitModel shooter)
         {
             if (!_cachedAim)
                 return false;
@@ -135,9 +135,10 @@ namespace Units
                 _shootVFX.StartEffect();
             if (_animator)
                     _animator.SetTrigger("Shoot");
-            
+
+            var angle = weapon.accuracy * .5f;
             Ray ray = new Ray(transform.position + Vector3.up, 
-                Quaternion.Euler(Random.Range(-5f,5f),Random.Range(-5f,5f), 0) * transform.forward);
+                Quaternion.Euler(Random.Range(-angle,angle),Random.Range(-angle,angle), 0) * transform.forward);
             RaycastHit[] hits;
             hits = Physics.RaycastAll(ray, GameConfigsAndSettings.instance.config.shootingDistance, _shootingLayer);
             Array.Sort(hits,
@@ -150,7 +151,7 @@ namespace Units
                 impact.transform.rotation = Quaternion.LookRotation(ray.direction);
                 Unit unit;
                 if (hit.collider.gameObject.TryGetComponent(out unit))
-                    unit.TakeDamage(damage);
+                    unit.TakeDamage(new Damage() { value = weapon.damage, from = shooter});
                 else
                     break;
             }

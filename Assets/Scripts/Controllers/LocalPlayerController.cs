@@ -8,10 +8,12 @@ namespace Controllers
     {
         private TriggerBase _mainInteraction, _secondaryInteraction;
         private int _cachedMainHint, _cachedSecondaryHint;
+        private bool _isAiming;
 
         private void Start()
         {
             InputController.instance.onShoot = Shoot;
+            InputController.instance.aim += Aim;
         }
 
         protected override void Update()
@@ -21,11 +23,9 @@ namespace Controllers
             if (mov.magnitude > 1f)
                 mov.Normalize();
             _unit.Move(mov);
-            Vector3 rot = new Vector3(InputController.instance.lookDirection.x, 0,
-                InputController.instance.lookDirection.y);
-            CameraController.instance.SetOffset(rot, 5f);
-            InputController.instance.aim = _unit.Aim;
-            _unit.Look(rot);
+            _unit.Aim(_isAiming);
+            Vector3 rot = AimController.instance.worldAimPos - _unit.transform.position;
+                _unit.Look(rot);
         }
 
         public void SetUnit(Unit unit, UnitModel model)
@@ -83,12 +83,17 @@ namespace Controllers
 
         protected override void ShootEffects()
         {
-            CameraController.instance.Shake(.5f, .1f);
+            CameraController.instance.Shake(_model.weapon.recoil, .1f);
         }
 
         public void Die()
         {
             
+        }
+        
+        void Aim(bool value)
+        {
+            _isAiming = value;
         }
     }
 }

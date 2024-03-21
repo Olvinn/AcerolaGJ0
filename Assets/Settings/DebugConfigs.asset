@@ -42,10 +42,13 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  shootingDistance: 25
+  shootingDistance: 30
   aiThinkingDelay: 2
-  cameraLerpSpeed: 10
+  aiDetectDistance: 15
+  cameraLerpSpeed: 5
+  cameraAimLerpSpeed: 3
   damageCameraShakingMagnitude: 1.5
   damageCameraShakingDuration: 0.35
+  aimDistance: 5
   mainUseColor: {r: 0.13069598, g: 0.6115316, b: 0.8396226, a: 1}
   secondaryUseColor: {r: 0.82361484, g: 0.8392157, b: 0.12941177, a: 1}

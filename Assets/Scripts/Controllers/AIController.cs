@@ -43,7 +43,7 @@ namespace Controllers
             Vector3 playerPos = GameController.instance.GetPlayerPos();
             Ray ray = new Ray(_unit.transform.position + Vector3.up, playerPos - _unit.transform.position);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, GameConfigsAndSettings.instance.config.shootingDistance, _unitsLayer))
+            if (Physics.Raycast(ray, out hit, GameConfigsAndSettings.instance.config.aiDetectDistance, _unitsLayer))
             {
                 if (Vector3.Distance(playerPos, hit.point + Vector3.down) < 2)
                 {

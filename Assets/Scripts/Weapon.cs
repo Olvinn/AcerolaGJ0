@@ -1,11 +1,11 @@
+using System;
+
+[Serializable]
 public struct Weapon
 {
-    public float rateOfFire { get; private set; }
-    public float damage { get; private set; }
-
-    public Weapon(float damage, float rateOfFire)
-    {
-        this.damage = damage;
-        this.rateOfFire = rateOfFire;
-    }
+    public string name;
+    public float rateOfFire;
+    public float damage;
+    public float accuracy;
+    public float recoil;
 }
