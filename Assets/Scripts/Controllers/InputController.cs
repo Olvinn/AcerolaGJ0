@@ -10,7 +10,7 @@ namespace Controllers
         public Vector2 lookDirection;
         public Vector2 cursorPosistion;
         public Action<bool> aim, onShoot;
-        public Action onMainInteract, onSecondaryInteract;
+        public Action onMainInteract, onSecondaryInteract, onReload;
         public bool isJoystick;
 
         public void ShakeGamepad(float magnitude, float time)
@@ -63,6 +63,11 @@ namespace Controllers
         public void OnAim(InputValue value)
         {
             aim.Invoke(value.isPressed);
+        }
+
+        public void OnReload(InputValue value)
+        {
+            onReload?.Invoke();
         }
     }
 }

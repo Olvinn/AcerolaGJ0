@@ -14,6 +14,7 @@ namespace Controllers
         {
             InputController.instance.onShoot = Shoot;
             InputController.instance.aim += Aim;
+            InputController.instance.onReload += Reload;
         }
 
         protected override void Update()
