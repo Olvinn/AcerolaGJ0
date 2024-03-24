@@ -144,7 +144,7 @@ namespace Units
                     _animator.SetTrigger("Shoot");
 
             var angle = weapon.accuracy * .5f;
-            Ray ray = new Ray(transform.position + Vector3.up, 
+            Ray ray = new Ray(_shootVFX.transform.position, 
                 Quaternion.Euler(Random.Range(-angle,angle),Random.Range(-angle,angle), 0) * transform.forward);
             RaycastHit[] hits;
             hits = Physics.RaycastAll(ray, GameConfigsAndSettings.instance.config.shootingDistance, _shootingLayer);
@@ -164,10 +164,10 @@ namespace Units
             }
 
             if (hits.Length > 0)
-                VFXController.instance.GetEffect(EffectType.BulletTrail).StartEffect(new []{ray.origin, hits[0].point});
+                VFXController.instance.GetEffect(EffectType.BulletTrail).StartEffect(ray.origin, hits[0].point);
             else
-                VFXController.instance.GetEffect(EffectType.BulletTrail).StartEffect(new []{ray.origin, 
-                    ray.origin + ray.direction * GameConfigsAndSettings.instance.config.shootingDistance});
+                VFXController.instance.GetEffect(EffectType.BulletTrail).StartEffect(ray.origin, 
+                    ray.origin + ray.direction * GameConfigsAndSettings.instance.config.shootingDistance);
 
             return true;
         }
