@@ -33,6 +33,7 @@ namespace Controllers
             base.SetUnit(unit, model);
             _unit.onTriggerEnter += SubscribeOnInput;
             _unit.onTriggerExit += UnsubscribeOnInput;
+            UIController.instance.UpdateMagazineMagazine(_currentRounds, _model.weapon.magazineCapacity);
         }
 
         public override void TakeDamage(Damage damage)
@@ -83,7 +84,15 @@ namespace Controllers
 
         protected override void ShootEffects()
         {
+            base.ShootEffects();
             CameraController.instance.Shake(_model.weapon.recoil, .1f);
+            UIController.instance.UpdateMagazineMagazine(_currentRounds, _model.weapon.magazineCapacity);
+        }
+
+        protected override void ReloadComplete()
+        {
+            base.ReloadComplete();
+            UIController.instance.UpdateMagazineMagazine(_currentRounds, _model.weapon.magazineCapacity);
         }
 
         public void Die()

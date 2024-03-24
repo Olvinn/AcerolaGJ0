@@ -12,6 +12,7 @@ namespace Units
     {
         public Action<ContactPoint[]> onCollide;
         public Action<Damage> onDamage;
+        public Action onReloadComplete;
         public event Action<ExposedTrigger> onTriggerEnter, onTriggerExit;
 
         [SerializeField] private NavMeshAgent _agent;
@@ -23,6 +24,11 @@ namespace Units
         private bool _cachedAim;
         private float _speed, _aimSpeed, _angularSpeed;
         private float _lastShotTime, _shotTimer;
+
+        private void Start()
+        {
+            _animator.onReloadComplete += onReloadComplete;
+        }
 
         private void Update()
         {
@@ -48,6 +54,7 @@ namespace Units
         {
             _agent = GetComponent<NavMeshAgent>();
             _rigidbody = GetComponent<Rigidbody>();
+            _animator = GetComponentInChildren<AnimationController>();
         }
     
         private void OnCollisionEnter(Collision collision)
@@ -168,6 +175,11 @@ namespace Units
         public void TakeDamage(Damage damage)
         {
             onDamage?.Invoke(damage);
+        }
+
+        public void Reload()
+        {
+            _animator.SetTrigger("Reloading");
         }
     }
 }

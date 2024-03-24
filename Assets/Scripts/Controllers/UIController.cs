@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UI;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -11,6 +12,7 @@ namespace Controllers
         [SerializeField] private Transform _hints;
         [SerializeField] private HpBar _playerHP;
         [SerializeField] private Transform _cross;
+        [SerializeField] private TextMeshProUGUI _magazineLabel;
 
         private GameObject _hintPrefab;
 
@@ -72,6 +74,11 @@ namespace Controllers
         {
             _crossPos = pos;
             _cross.gameObject.SetActive(show);
+        }
+
+        public void UpdateMagazineMagazine(int current, int max)
+        {
+            _magazineLabel.text = $"{current}/{max}";
         }
 
         private void InstantiateHint()

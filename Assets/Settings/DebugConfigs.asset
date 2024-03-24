@@ -44,8 +44,8 @@ MonoBehaviour:
     m_EditorAssetChanged: 0
   shootingDistance: 30
   aiThinkingDelay: 2
-  aiDetectDistance: 15
-  cameraLerpSpeed: 5
+  aiDetectDistance: 10
+  cameraLerpSpeed: 15
   cameraAimLerpSpeed: 3
   damageCameraShakingMagnitude: 1.5
   damageCameraShakingDuration: 0.35
@@ -57,9 +57,11 @@ MonoBehaviour:
     rateOfFire: 10
     damage: 15
     accuracy: 5
-    recoil: 0.1
+    recoil: 0.2
+    magazineCapacity: 20
   - name: enemies gun
     rateOfFire: 2
     damage: 5
     accuracy: 15
     recoil: 0.5
+    magazineCapacity: 15

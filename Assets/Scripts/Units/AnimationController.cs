@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Units
@@ -5,6 +6,7 @@ namespace Units
     [RequireComponent(typeof(Animator))]
     public class AnimationController : MonoBehaviour
     {
+        public event Action onReloadComplete;
         [SerializeField] private Animator _animator;
 
         private void Reset()
@@ -15,6 +17,11 @@ namespace Units
         public void FootStep()
         {
             
+        }
+
+        public void OnReloadComplete()
+        {
+            onReloadComplete?.Invoke();
         }
 
         public void SetFloat(string key, float value) => _animator.SetFloat(key, value);
