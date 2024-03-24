@@ -52,3 +52,14 @@ MonoBehaviour:
   aimDistance: 5
   mainUseColor: {r: 0.13069598, g: 0.6115316, b: 0.8396226, a: 1}
   secondaryUseColor: {r: 0.82361484, g: 0.8392157, b: 0.12941177, a: 1}
+  weapons:
+  - name: player gun
+    rateOfFire: 10
+    damage: 15
+    accuracy: 5
+    recoil: 0.1
+  - name: enemies gun
+    rateOfFire: 2
+    damage: 5
+    accuracy: 15
+    recoil: 0.5

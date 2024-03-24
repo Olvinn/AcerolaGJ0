@@ -21,7 +21,7 @@ namespace Controllers
                     Vector3 rot = new Vector3(InputController.instance.lookDirection.x, 0,
                         InputController.instance.lookDirection.y);
                     Vector2 center = new Vector2(Screen.width * .5f, Screen.height * .5f);
-                    screenAimPos = center + InputController.instance.lookDirection * (Screen.width * .5f);
+                    screenAimPos = center + InputController.instance.lookDirection * (Screen.height * .4f);
                     Rycast();
                     CameraController.instance.SetOffset(rot);
                 }
@@ -33,9 +33,13 @@ namespace Controllers
                         InputController.instance.lookDirection.y);
                     CameraController.instance.SetOffset(rot);
                 }
+                UIController.instance.UpdateAim(true, screenAimPos);
             }
             else
+            {
                 CameraController.instance.SetOffset(Vector3.zero);
+                UIController.instance.UpdateAim(false, screenAimPos);
+            }
         }
 
         void Aim(bool value)
