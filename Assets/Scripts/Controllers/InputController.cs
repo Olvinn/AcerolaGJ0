@@ -15,7 +15,8 @@ namespace Controllers
 
         public void ShakeGamepad(float magnitude, float time)
         {
-            Gamepad.current.SetMotorSpeeds(magnitude, time);
+            if (Gamepad.current != null)
+                Gamepad.current.SetMotorSpeeds(magnitude, time);
         }
         
         public void OnMove(InputValue value)
