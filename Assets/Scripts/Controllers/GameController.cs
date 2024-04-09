@@ -1,4 +1,5 @@
 using System.Collections;
+using Networking;
 using Units;
 using Unity.AI.Navigation;
 using UnityEngine;
@@ -15,6 +16,9 @@ namespace Controllers
 
         private LocalPlayerController _playerController;
         private GameObject _level;
+
+        private Server _server;
+        private Client _client;
 
         private IEnumerator Start()
         {
@@ -35,6 +39,9 @@ namespace Controllers
             SetUpPlayer(Instantiate(playerHandle.Result, _units).GetComponent<Unit>());
 
             SpawnEnemies();
+
+            _server = new Server();
+            _client = new Client();
         }
 
         public Vector3 GetPlayerPos()
@@ -47,6 +54,16 @@ namespace Controllers
         public bool IsPlayer(Unit unit)
         {
             return _playerController.GetView() == unit;
+        }
+
+        public void StartServer()
+        {
+            _ = _server.StartServer();
+        }
+
+        public void StartClient()
+        {
+            _client.StartClient();
         }
 
         private void SetUpPlayer(Unit unit)

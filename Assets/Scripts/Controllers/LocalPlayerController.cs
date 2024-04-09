@@ -26,6 +26,7 @@ namespace Controllers
             _unit.Move(mov);
             _unit.Aim(_isAiming);
             Vector3 rot = AimController.instance.worldAimPos - _unit.transform.position;
+            if (rot != Vector3.zero)
                 _unit.Look(rot);
         }
 

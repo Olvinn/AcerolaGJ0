@@ -86,10 +86,12 @@ namespace Controllers
             StartCoroutine(Thinking());
         }
 
+        #if UNITY_EDITOR
         private void OnDrawGizmos()
         {
             Handles.color = Color.black;
             Handles.Label(_unit.transform.position, _playerLastSeenPos.ToString());
         }
+        #endif
     }
 }
