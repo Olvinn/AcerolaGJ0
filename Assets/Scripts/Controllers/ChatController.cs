@@ -19,6 +19,10 @@ namespace Controllers
             base.Awake();
             _history.text = String.Empty;
             _toShow = new Queue<string>();
+
+            var scale = _history.rectTransform.sizeDelta;
+            scale.y = 50;
+            _history.rectTransform.sizeDelta = scale;
         }
 
         private void Update()
@@ -29,6 +33,9 @@ namespace Controllers
                     return;
                 
                 _history.text += _toShow.Dequeue() + "\n";
+                _history = Instantiate(_history, _history.transform.parent);
+                _history.text = String.Empty;
+                _input.transform.SetAsLastSibling();
             }
         }
 

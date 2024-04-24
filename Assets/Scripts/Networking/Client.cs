@@ -68,6 +68,10 @@ namespace Networking
             {
                 Debug.Log("Socket exception: " + socketException);
             }
+            catch (Exception exception)
+            {
+                Debug.Log("Exception:" + exception);
+            }
         }
 
         public void SendMessage(string message)
