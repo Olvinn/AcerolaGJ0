@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Networking;
 using Units;
@@ -44,6 +45,12 @@ namespace Controllers
             _client = new Client();
         }
 
+        private void Update()
+        {
+            if (_server != null)
+                _server.SendMessage(Time.time.ToString());
+        }
+
         public Vector3 GetPlayerPos()
         {
             if (_playerController)
@@ -58,12 +65,18 @@ namespace Controllers
 
         public void StartServer()
         {
-            _ = _server.StartServer();
+            _server.Start();
         }
 
         public void StartClient()
         {
-            _client.StartClient();
+            _client.Start();
+        }
+
+        public void StopNetworking()
+        {
+            _server.Stop();
+            _client.Stop();
         }
 
         private void SetUpPlayer(Unit unit)

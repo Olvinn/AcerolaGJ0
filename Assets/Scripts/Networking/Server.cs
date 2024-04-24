@@ -1,70 +1,84 @@
-using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using UnityEngine;
 
 namespace Networking
 {
     public class Server
     {
-        public async Task StartServer()
+        TcpListener _server = null;
+        TcpClient _client = null;
+        NetworkStream _stream = null;
+        Thread _thread;
+
+        public void Start()
         {
-            TcpListener tcp = null;
+            _thread = new Thread(new ThreadStart(SetupServer));
+            _thread.Start();
+        }
+
+        private void SetupServer()
+        {
             try
             {
-                int port = 13000;
-                IPAddress localAddr = IPAddress.Parse("127.0.0.1");
-                tcp = new TcpListener(localAddr, port);
-                tcp.Start();
-                Debug.Log($"Server started. Listening for connections...");
+                IPAddress serverIpAddress = IPAddress.Parse("127.0.0.1");
+                int serverPort = 13000;
+                _server = new TcpListener(serverIpAddress, serverPort);
+                _server.Start();
+
+                byte[] buffer = new byte[1024];
+                string data = null;
 
                 while (true)
                 {
-                    TcpClient client = await tcp.AcceptTcpClientAsync();
-                    Debug.Log($"Client connected!");
+                    Debug.Log("Waiting for connection...");
+                    _client = _server.AcceptTcpClient();
+                    Debug.Log("Connected!");
 
-                    _ = HandleClientAsync(client);
+                    data = null;
+                    _stream = _client.GetStream();
+
+                    int i;
+
+                    while ((i = _stream.Read(buffer, 0, buffer.Length)) != 0)
+                    {
+                        data = Encoding.UTF8.GetString(buffer, 0, i);
+                        Debug.Log("Received: " + data);
+
+                        string response = "Server response: " + data.ToString();
+                        SendMessage(message: response);
+                    }
+                    _client.Close();
                 }
             }
-            catch (Exception e)
+            catch (SocketException e)
             {
-                Debug.Log($"Exception: {e}");
+                Debug.Log("SocketException: " + e);
             }
             finally
             {
-                tcp?.Stop();
+                _server.Stop();
             }
         }
-        
-        async Task HandleClientAsync(TcpClient client)
+
+        public void Stop()
         {
-            try
-            {
-                NetworkStream stream = client.GetStream();
-                byte[] buffer = new byte[1024];
-                int bytesRead;
+            _stream.Close();
+            _client.Close();
+            _server.Stop();
+            _thread.Abort();
+        }
 
-                while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
-                {
-                    string data = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-                    Debug.Log($"Received: {data}");
-
-                    data = data.ToUpper();
-                    byte[] response = Encoding.ASCII.GetBytes(data);
-                    await stream.WriteAsync(response, 0, response.Length);
-                    Debug.Log($"Sent: {data}");
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.Log($"Exception: {e}");
-            }
-            finally
-            {
-                client.Close();
-            }
+        public void SendMessage(string message)
+        {
+            if (_stream == null)
+                return;
+            
+            byte[] msg = Encoding.UTF8.GetBytes(message);
+            _stream.Write(msg, 0, msg.Length);
+            Debug.Log("Sent: " + message);
         }
     }
 }
