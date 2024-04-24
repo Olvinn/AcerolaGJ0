@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -8,6 +9,8 @@ namespace Networking
 {
     public class Server
     {
+        public Action<string> onRecieveMessage;
+
         TcpListener _server = null;
         TcpClient _client = null;
         NetworkStream _stream = null;
@@ -45,9 +48,10 @@ namespace Networking
                     while ((i = _stream.Read(buffer, 0, buffer.Length)) != 0)
                     {
                         data = Encoding.UTF8.GetString(buffer, 0, i);
+                        onRecieveMessage?.Invoke(data);
                         Debug.Log("Received: " + data);
 
-                        string response = "Server response: " + data.ToString();
+                        string response = data;
                         SendMessage(message: response);
                     }
                     _client.Close();
@@ -65,6 +69,9 @@ namespace Networking
 
         public void Stop()
         {
+            if (_stream == null)
+                return;
+            
             _stream.Close();
             _client.Close();
             _server.Stop();

@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Networking
@@ -14,6 +11,7 @@ namespace Networking
         public string serverIP = "127.0.0.1"; // Set this to your server's IP address.
         public int serverPort = 13000;             // Set this to your server's port.
         private string messageToSend = "Hello Server!"; // The message to send.
+        public Action<string> onRecieveMessage;
 
         private TcpClient client;
         private NetworkStream stream;
@@ -60,6 +58,7 @@ namespace Networking
                             Array.Copy(bytes, 0, incomingData, 0, length);
                             // Convert byte array to string message.
                             string serverMessage = Encoding.UTF8.GetString(incomingData);
+                            onRecieveMessage?.Invoke(serverMessage);
                             Debug.Log("Server message received: " + serverMessage);
                         }
                     }

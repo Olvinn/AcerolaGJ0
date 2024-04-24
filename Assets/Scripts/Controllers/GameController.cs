@@ -47,8 +47,8 @@ namespace Controllers
 
         private void Update()
         {
-            if (_server != null)
-                _server.SendMessage(Time.time.ToString());
+            // if (_server != null)
+            //     _server.SendMessage(Time.time.ToString());
         }
 
         public Vector3 GetPlayerPos()
@@ -66,11 +66,18 @@ namespace Controllers
         public void StartServer()
         {
             _server.Start();
+
+            ChatController.instance.onSendMessage += _server.SendMessage;
+            ChatController.instance.onSendMessage += ChatController.instance.ReceiveMessage;
+            _server.onRecieveMessage += ChatController.instance.ReceiveMessage;
         }
 
         public void StartClient()
         {
             _client.Start();
+            
+            ChatController.instance.onSendMessage += _client.SendMessage;
+            _client.onRecieveMessage += ChatController.instance.ReceiveMessage;
         }
 
         public void StopNetworking()
