@@ -18,9 +18,6 @@ namespace Controllers
         private LocalPlayerController _playerController;
         private GameObject _level;
 
-        private Server _server;
-        private Client _client;
-
         private IEnumerator Start()
         {
             var locationHandleFloor1 = Addressables.LoadAssetAsync<GameObject>(GameConfigsAndSettings.instance.config.debugLevel);
@@ -40,9 +37,6 @@ namespace Controllers
             SetUpPlayer(Instantiate(playerHandle.Result, _units).GetComponent<Unit>());
 
             SpawnEnemies();
-
-            _server = new Server();
-            _client = new Client();
         }
 
         private void Update()
@@ -65,25 +59,26 @@ namespace Controllers
 
         public void StartServer()
         {
-            _server.Start();
+            NetworkController.instance.networkName = "Host";
+            NetworkController.instance.HostGame();
 
-            ChatController.instance.onSendMessage += _server.SendMessage;
-            ChatController.instance.onSendMessage += ChatController.instance.ReceiveMessage;
-            _server.onRecieveMessage += ChatController.instance.ReceiveMessage;
+            ChatController.instance.onSendNetworkMessage += NetworkController.instance.SendMessage;
+            ChatController.instance.onSendNetworkMessage += ChatController.instance.ReceiveNetworkMessage;
+            NetworkController.instance.onReceiveMessage += ChatController.instance.ReceiveNetworkMessage;
         }
 
         public void StartClient()
         {
-            _client.Start();
-            
-            ChatController.instance.onSendMessage += _client.SendMessage;
-            _client.onRecieveMessage += ChatController.instance.ReceiveMessage;
+            NetworkController.instance.networkName = "Client";
+            NetworkController.instance.ConnectToHost();
+
+            ChatController.instance.onSendNetworkMessage += NetworkController.instance.SendMessage;
+            NetworkController.instance.onReceiveMessage += ChatController.instance.ReceiveNetworkMessage;
         }
 
         public void StopNetworking()
         {
-            _server.Stop();
-            _client.Stop();
+            NetworkController.instance.Stop();
         }
 
         private void SetUpPlayer(Unit unit)

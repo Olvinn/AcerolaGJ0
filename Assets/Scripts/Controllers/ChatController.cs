@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Networking;
 using TMPro;
 using UnityEngine;
 
@@ -12,7 +13,7 @@ namespace Controllers
         private Queue<string> _toShow;
         private object _locker = new object();
 
-        public Action<string> onSendMessage;
+        public Action<ChatMessage> onSendNetworkMessage;
 
         protected override void Awake()
         {
@@ -39,17 +40,20 @@ namespace Controllers
             }
         }
 
-        public void ReceiveMessage(string message)
+        public void ReceiveNetworkMessage(NetworkMessage message)
         {
-            lock (_locker)
+            if (message is ChatMessage chatMessage)
             {
-                _toShow.Enqueue(message);
+                lock (_locker)
+                {
+                    _toShow.Enqueue($"{chatMessage.name}: {chatMessage.message}");
+                }
             }
         }
 
         public void SendMessage()
         {
-            onSendMessage?.Invoke(_input.text);
+            onSendNetworkMessage?.Invoke(new ChatMessage(_input.text, NetworkController.instance.networkName));
             _input.text = String.Empty;
         }
     }

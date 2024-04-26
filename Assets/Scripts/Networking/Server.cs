@@ -7,9 +7,10 @@ using UnityEngine;
 
 namespace Networking
 {
-    public class Server
+    public class Server : INetworkConnector
     {
-        public Action<string> onRecieveMessage;
+        public bool isServer => true;
+        public event Action<string> onReceiveMessage;
 
         TcpListener _server = null;
         TcpClient _client = null;
@@ -36,9 +37,7 @@ namespace Networking
 
                 while (true)
                 {
-                    Debug.Log("Waiting for connection...");
                     _client = _server.AcceptTcpClient();
-                    Debug.Log("Connected!");
 
                     data = null;
                     _stream = _client.GetStream();
@@ -48,8 +47,7 @@ namespace Networking
                     while ((i = _stream.Read(buffer, 0, buffer.Length)) != 0)
                     {
                         data = Encoding.UTF8.GetString(buffer, 0, i);
-                        onRecieveMessage?.Invoke(data);
-                        Debug.Log("Received: " + data);
+                        onReceiveMessage?.Invoke(data);
 
                         string response = data;
                         SendMessage(message: response);
@@ -67,7 +65,7 @@ namespace Networking
             }
         }
 
-        public void Stop()
+        private void Stop()
         {
             if (_stream == null)
                 return;
@@ -85,7 +83,14 @@ namespace Networking
             
             byte[] msg = Encoding.UTF8.GetBytes(message);
             _stream.Write(msg, 0, msg.Length);
-            Debug.Log("Sent: " + message);
+        }
+
+        public void Dispose()
+        {
+            Stop();
+            _client?.Dispose();
+            _stream?.Dispose();
+            onReceiveMessage = null;
         }
     }
 }

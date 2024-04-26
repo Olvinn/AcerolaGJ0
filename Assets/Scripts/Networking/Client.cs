@@ -6,16 +6,16 @@ using UnityEngine;
 
 namespace Networking
 {
-    public class Client
+    public class Client : INetworkConnector
     {
         public string serverIP = "127.0.0.1"; // Set this to your server's IP address.
         public int serverPort = 13000;             // Set this to your server's port.
-        private string messageToSend = "Hello Server!"; // The message to send.
-        public Action<string> onRecieveMessage;
+        public bool isServer => false;
+        public event Action<string> onReceiveMessage;
 
-        private TcpClient client;
-        private NetworkStream stream;
-        private Thread clientReceiveThread;
+        private TcpClient _client;
+        private NetworkStream _stream;
+        private Thread _clientReceiveThread;
 
         public void Start()
         {
@@ -26,13 +26,12 @@ namespace Networking
         {
             try
             {
-                client = new TcpClient(serverIP, serverPort);
-                stream = client.GetStream();
-                Debug.Log("Connected to server.");
+                _client = new TcpClient(serverIP, serverPort);
+                _stream = _client.GetStream();
 
-                clientReceiveThread = new Thread(new ThreadStart(ListenForData));
-                clientReceiveThread.IsBackground = true;
-                clientReceiveThread.Start();
+                _clientReceiveThread = new Thread(new ThreadStart(ListenForData));
+                _clientReceiveThread.IsBackground = true;
+                _clientReceiveThread.Start();
             }
             catch (SocketException e)
             {
@@ -47,19 +46,16 @@ namespace Networking
                 byte[] bytes = new byte[1024];
                 while (true)
                 {
-                    // Check if there's any data available on the network stream
-                    if (stream.DataAvailable)
+                    if (_stream.DataAvailable)
                     {
                         int length;
                         // Read incoming stream into byte array.
-                        while ((length = stream.Read(bytes, 0, bytes.Length)) != 0)
+                        while ((length = _stream.Read(bytes, 0, bytes.Length)) != 0)
                         {
                             var incomingData = new byte[length];
                             Array.Copy(bytes, 0, incomingData, 0, length);
-                            // Convert byte array to string message.
                             string serverMessage = Encoding.UTF8.GetString(incomingData);
-                            onRecieveMessage?.Invoke(serverMessage);
-                            Debug.Log("Server message received: " + serverMessage);
+                            onReceiveMessage?.Invoke(serverMessage);
                         }
                     }
                 }
@@ -76,25 +72,31 @@ namespace Networking
 
         public void SendMessage(string message)
         {
-            if (client == null || !client.Connected)
+            if (_client == null || !_client.Connected)
             {
-                Debug.LogError("Client not connected to server.");
                 return;
             }
 
             byte[] data = Encoding.UTF8.GetBytes(message);
-            stream.Write(data, 0, data.Length);
-            Debug.Log("Sent message to server: " + message);
+            _stream.Write(data, 0, data.Length);
         }
 
-        public void Stop()
+        private void Stop()
         {
-            if (stream != null)
-                stream.Close();
-            if (client != null)
-                client.Close();
-            if (clientReceiveThread != null)
-                clientReceiveThread.Abort();
+            if (_stream != null)
+                _stream.Close();
+            if (_client != null)
+                _client.Close();
+            if (_clientReceiveThread != null)
+                _clientReceiveThread.Abort();
+        }
+
+        public void Dispose()
+        {
+            Stop();
+            _client?.Dispose();
+            _stream?.Dispose();
+            onReceiveMessage = null;
         }
     }
 }
