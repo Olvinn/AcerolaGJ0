@@ -1,5 +1,6 @@
 using System.Collections;
 using Networking;
+using Stages;
 using Units;
 using Unity.AI.Navigation;
 using UnityEngine;
@@ -9,6 +10,7 @@ namespace Controllers
 {
     public class GameController : Singleton<GameController>
     {
+        [SerializeField] private Stage _gameStage;
         [SerializeField] private Transform _environment, _units, _players;
         [SerializeField] private NavMeshSurface _navmesh;
 
@@ -16,6 +18,7 @@ namespace Controllers
 
         private LocalPlayerController _playerController;
         private GameObject _level;
+        private Stage _currentStage;
 
         private IEnumerator Start()
         {
@@ -36,12 +39,14 @@ namespace Controllers
             SetUpPlayer(Instantiate(playerHandle.Result, _units).GetComponent<Unit>());
 
             SpawnEnemies();
+
+            _currentStage = _gameStage;
+            _gameStage.Open();
         }
 
         private void Update()
         {
-            // if (_server != null)
-            //     _server.SendMessage(Time.time.ToString());
+            _currentStage.UpdateStage();
         }
 
         public Vector3 GetPlayerPos()
@@ -78,6 +83,13 @@ namespace Controllers
         public void StopNetworking()
         {
             NetworkController.instance.Stop();
+        }
+
+        private void ChangeStage(Stage stage)
+        {
+            _currentStage.Close();
+            stage.Open();
+            _currentStage = stage;
         }
 
         private void SetUpPlayer(Unit unit)
