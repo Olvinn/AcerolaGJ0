@@ -7,4 +7,16 @@ namespace Commands
         public Vector3 Pos;
         public bool Show;
     }
+    
+    public struct ShowHint
+    {
+        public string Text;
+        public Vector3 Pos;
+        public int Id;
+    }
+
+    public struct HideHint
+    {
+        public int Id;
+    }
 }

@@ -46,16 +46,6 @@ namespace Controllers
             _gameStage.Open();
         }
 
-        private void Update()
-        {
-            _currentStage.Update();
-        }
-
-        private void LateUpdate()
-        {
-            _currentStage.LateUpdate();
-        }
-
         public Vector3 GetPlayerPos()
         {
             if (_playerController)

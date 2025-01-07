@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace Stages
@@ -19,14 +18,14 @@ namespace Stages
             OnClose();
         }
 
-        public void Update()
+        protected void Update()
         {
             if (!_isOpen)
                 return;
             OnUpdate();
         }
 
-        public void LateUpdate()
+        protected void LateUpdate()
         {
             if (!_isOpen)
                 return;

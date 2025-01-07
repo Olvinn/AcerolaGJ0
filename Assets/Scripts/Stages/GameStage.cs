@@ -1,7 +1,11 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using Commands;
 using TMPro;
 using UI;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace Stages
 {
@@ -14,13 +18,32 @@ namespace Stages
         [SerializeField] private Transform _cross;
         [SerializeField] private TextMeshProUGUI _magazineLabel;
         
-        private Vector2 _crossPos;
+        private GameObject _hintPrefab;
         
+        private Vector2 _crossPos;
+        private List<Hint> _unusedHints;
+        private Dictionary<int, Hint> _hintsInUse;
+
+        private IEnumerator Start()
+        {
+            _unusedHints = new List<Hint>();
+            _hintsInUse = new Dictionary<int, Hint>();
+            
+            var handler = Addressables.LoadAssetAsync<GameObject>(GameConfigsAndSettings.instance.config.hint);
+            while (!handler.IsDone)
+                yield return null;
+            _hintPrefab = handler.Result;
+            
+            InstantiateHint();
+        }
+
         protected override void OnOpen()
         {
             _gameWindow.SetActive(true);
             
             CommandBus.singleton.RegisterHandler<UpdateAim>(UpdateAim);
+            CommandBus.singleton.RegisterHandler<ShowHint>(ShowHint);
+            CommandBus.singleton.RegisterHandler<HideHint>(HideHint);
         }
 
         protected override void OnClose()
@@ -28,6 +51,8 @@ namespace Stages
             _gameWindow.SetActive(false);
             
             CommandBus.singleton.RemoveHandler<UpdateAim>(UpdateAim);
+            CommandBus.singleton.RemoveHandler<ShowHint>(ShowHint);
+            CommandBus.singleton.RemoveHandler<HideHint>(HideHint);
         }
 
         protected override void OnUpdate()
@@ -43,6 +68,42 @@ namespace Stages
         {
             _crossPos = data.Pos;
             _cross.gameObject.SetActive(data.Show);
+        }
+        
+        private void ShowHint(ShowHint data)
+        {
+            if (_unusedHints.Count == 0)
+                InstantiateHint();
+
+            var hint = _unusedHints[0];
+            _unusedHints.Remove(hint);
+            _hintsInUse.Add(data.Id, hint);
+            hint.gameObject.SetActive(true);
+            Color color = _hintsInUse.Count switch
+            {
+                1 => GameConfigsAndSettings.instance.config.mainUseColor,
+                2 => GameConfigsAndSettings.instance.config.secondaryUseColor,
+                _ => Color.magenta
+            };
+            hint.SetHint(color, data.Text, data.Pos);
+        }
+
+        private void HideHint(HideHint data)
+        {
+            Hint hint;
+            _hintsInUse.Remove(data.Id, out hint);
+            if (hint)
+            {
+                _unusedHints.Add(hint);
+                hint.gameObject.SetActive(false);
+            }
+        }
+        
+        private void InstantiateHint()
+        {
+            var hint = Instantiate(_hintPrefab, _hints).GetComponent<Hint>();
+            _unusedHints.Add(hint);
+            hint.gameObject.SetActive(false);
         }
     }
 }
