@@ -4,14 +4,13 @@ namespace Console
 {
     public class ConsoleCommand
     {
-        public string id, desc, succ;
+        public string id, desc;
         event Action<string> action;
 
-        public ConsoleCommand(string id, string desc, string succ, Action<string> action)
+        public ConsoleCommand(string id, string desc, Action<string> action)
         {
             this.id = id;
             this.desc = desc;
-            this.succ = succ;
             this.action = action;
         }
 

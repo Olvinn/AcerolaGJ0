@@ -14,16 +14,16 @@ namespace Console
         {
             List<ConsoleCommand> commands = new()
             {
-                new ConsoleCommand("openStage", "opens selected stage", "stage opened", (x) => 
+                new ConsoleCommand("openStage", "opens selected stage", (x) => 
                     { StageController.Instance.OpenStage(Enum.Parse<StageType>(x)); }),
-                new ConsoleCommand("backStage", "returns to previous stage", "done", (x) =>
+                new ConsoleCommand("backStage", "returns to previous stage", (x) =>
                     { StageController.Instance.Back(); }),
-                new ConsoleCommand("hostGame", "starts multiplayer game as host", "done", (x) =>
+                new ConsoleCommand("hostGame", "starts multiplayer game as host", (x) =>
                     { GameController.Instance.StartServer(); }),
-                new ConsoleCommand("connect", "connects to multiplayer game as client", "done", (x) =>
+                new ConsoleCommand("connect", "connects to multiplayer game as client", (x) =>
                     { GameController.Instance.StartClient(); }),
                 
-                new ConsoleCommand("help", "shows all commands", "hope it helps", (x) =>
+                new ConsoleCommand("help", "shows all commands", (x) =>
                 {
                     var sb = new StringBuilder();
                     foreach (var command in Commands.Values)

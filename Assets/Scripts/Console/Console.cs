@@ -45,7 +45,7 @@ namespace Console
             
             if (Input.GetKeyDown(KeyCode.Tab))
             {
-                if (_autofillStart == string.Empty)
+                if (_autofillStart == string.Empty || _input.text.Length < _autofillStart.Length)
                     _autofillStart = _input.text;
                 Autofill();
                 _input.Select();
@@ -102,7 +102,6 @@ namespace Console
                     c.Invoke(arg);
                     _history.Add(txt);
                     _repeatIndex = 0;
-                    LogText($"[CONSOLE] {c.succ}");
                     return;
                 }
             }
@@ -142,9 +141,6 @@ namespace Console
 
         private void Autofill()
         {
-            if (_autofillStart == string.Empty)
-                return;
-
             List<string> temp = new List<string>();
             foreach (var c in _commands.Commands.Keys)
             {
