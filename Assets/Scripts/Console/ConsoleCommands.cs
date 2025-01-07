@@ -18,6 +18,11 @@ namespace Console
                     { StageController.Instance.OpenStage(Enum.Parse<StageType>(x)); }),
                 new ConsoleCommand("backStage", "returns to previous stage", "done", (x) =>
                     { StageController.Instance.Back(); }),
+                new ConsoleCommand("hostGame", "starts multiplayer game as host", "done", (x) =>
+                    { GameController.Instance.StartServer(); }),
+                new ConsoleCommand("connect", "connects to multiplayer game as client", "done", (x) =>
+                    { GameController.Instance.StartClient(); }),
+                
                 new ConsoleCommand("help", "shows all commands", "hope it helps", (x) =>
                 {
                     var sb = new StringBuilder();
