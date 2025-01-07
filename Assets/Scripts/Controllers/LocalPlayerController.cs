@@ -53,9 +53,6 @@ namespace Controllers
             if (_mainInteraction == null)
             {
                 InputController.instance.onMainInteract += trigger.Trigger;
-                // _cachedMainHint = UIController.instance.ShowHint(GameConfigsAndSettings.instance.config.mainUseColor,
-                //     trigger.hintText,
-                //     trigger.transform.position + Vector3.up);
                 CommandBus.singleton.Handle(new ShowHint()
                 {
                     Id = trigger.GetHashCode(),
@@ -67,9 +64,6 @@ namespace Controllers
             else
             {
                 InputController.instance.onSecondaryInteract += trigger.Trigger;
-                // _cachedSecondaryHint = UIController.instance.ShowHint(GameConfigsAndSettings.instance.config.secondaryUseColor,
-                //     trigger.hintText,
-                //     trigger.transform.position + Vector3.up);
                 CommandBus.singleton.Handle(new ShowHint()
                 {
                     Id = trigger.GetHashCode(),
@@ -85,7 +79,6 @@ namespace Controllers
             if (trigger == _mainInteraction)
             {
                 InputController.instance.onMainInteract -= trigger.Trigger;
-                // UIController.instance.HideHint(_cachedMainHint);
                 CommandBus.singleton.Handle(new HideHint()
                 {
                     Id = trigger.GetHashCode()
@@ -95,7 +88,6 @@ namespace Controllers
             else if (trigger == _secondaryInteraction)
             {
                 InputController.instance.onSecondaryInteract -= trigger.Trigger;
-                // UIController.instance.HideHint(_cachedSecondaryHint);
                 CommandBus.singleton.Handle(new HideHint()
                 {
                     Id = trigger.GetHashCode()
