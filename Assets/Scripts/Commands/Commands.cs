@@ -1,3 +1,4 @@
+using Units;
 using UnityEngine;
 
 namespace Commands
@@ -30,5 +31,10 @@ namespace Commands
     {
         public float CurrentMag;
         public float MaxMag;
+    }
+
+    public struct OnPlayerSpawned
+    {
+        public UnitModel Model;
     }
 }

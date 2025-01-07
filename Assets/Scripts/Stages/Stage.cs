@@ -18,6 +18,8 @@ namespace Stages
             OnClose();
         }
 
+        public abstract StageType GetStageType();
+
         protected void Update()
         {
             if (!_isOpen)
@@ -32,24 +34,12 @@ namespace Stages
             OnLateUpdate();
         }
 
-        protected virtual void OnLateUpdate()
-        {
-            
-        }
+        protected virtual void OnUpdate() { }
 
-        protected virtual void OnOpen()
-        {
-            
-        }
+        protected virtual void OnLateUpdate() { }
 
-        protected virtual void OnClose()
-        {
-            
-        }
+        protected abstract void OnOpen();
 
-        protected virtual void OnUpdate()
-        {
-            
-        }
+        protected abstract void OnClose();
     }
 }

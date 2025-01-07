@@ -21,7 +21,7 @@ namespace Console
 
         List<string> _logsMsgs;
 
-        Dictionary<string, ConsoleCommand> _commands;
+        ConsoleCommands _commands = new ();
         List<string> _history;
 
         private void Start()
@@ -32,7 +32,7 @@ namespace Console
             _autofillStart = string.Empty;
 
             Application.logMessageReceived += CaptureLog;
-            InputController.instance.onConsole += Switch;
+            InputController.Instance.onConsole += Switch;
         }
 
         private void Update()
@@ -46,7 +46,7 @@ namespace Console
             if (Input.GetKeyDown(KeyCode.Tab))
             {
                 if (_autofillStart == string.Empty)
-                    _autofillStart = _input.text.ToLower();
+                    _autofillStart = _input.text;
                 Autofill();
                 _input.Select();
             }
@@ -56,11 +56,6 @@ namespace Console
             
             if (Input.GetKeyDown(KeyCode.DownArrow))
                 RepeatCommand(1);
-        }
-
-        public void AddCommand(ConsoleCommand command)
-        {
-            _commands.Add(command.id, command);
         }
 
         private void CaptureLog(string condition, string stackTrace, LogType type)
@@ -80,7 +75,7 @@ namespace Console
             ParseCommand(txt);
         }
 
-        private void LogText(string txt)
+        public void LogText(string txt)
         {
             _logsMsgs.Add(txt);
             if (_logsMsgs.Count > 34)
@@ -96,19 +91,18 @@ namespace Console
 
         public void ParseCommand(string txt)
         {
-            txt = txt.ToLower();
             string[] words = txt.Split(' ');
 
             try
             {
                 ConsoleCommand c;
-                if (_commands.TryGetValue(words[0].Replace(" ", ""), out c))
+                if (_commands.Commands.TryGetValue(words[0], out c))
                 {
-                    LogText($"[CONSOLE] {c.succ}");
                     var arg = words.Length > 1 ? txt.Remove(0, words[0].Length + 1) : "";
                     c.Invoke(arg);
                     _history.Add(txt);
                     _repeatIndex = 0;
+                    LogText($"[CONSOLE] {c.succ}");
                     return;
                 }
             }
@@ -117,8 +111,10 @@ namespace Console
                 LogText($"[CONSOLE] {e.Message}\n{e.StackTrace}");
                 return;
             }
-
             LogText($"[CONSOLE] There is no command '{txt}'");
+
+            _history.Add(txt);
+            _repeatIndex = 0;
         }
         
         public void Switch()
@@ -150,7 +146,7 @@ namespace Console
                 return;
 
             List<string> temp = new List<string>();
-            foreach (var c in _commands.Keys)
+            foreach (var c in _commands.Commands.Keys)
             {
                 if (c.Contains(_autofillStart))
                     temp.Add(c);
@@ -181,14 +177,6 @@ namespace Console
 
             _input.text = _history[_repeatIndex];
             _input.caretPosition = _input.text.Length;
-        }
-
-        private void OnHelp(string value)
-        {
-            LogText("-------------");
-            foreach (var c in _commands.Values)
-                LogText($"{c.id}: {c.desc}");
-            LogText("-------------");
         }
     }
 }

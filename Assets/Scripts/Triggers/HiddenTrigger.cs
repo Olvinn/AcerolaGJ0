@@ -15,7 +15,7 @@ namespace Triggers
             Unit unit;
             if (other.gameObject.TryGetComponent(out unit))
             {
-                if (_playerOnly && GameController.instance.IsPlayer(unit))
+                if (_playerOnly && GameController.Instance.IsPlayer(unit))
                     if (_switcher)
                         _switcher.On();
             }
@@ -26,7 +26,7 @@ namespace Triggers
             Unit unit;
             if (other.gameObject.TryGetComponent(out unit))
             {
-                if (_playerOnly && GameController.instance.IsPlayer(unit))
+                if (_playerOnly && GameController.Instance.IsPlayer(unit))
                     if (_switcher)
                         _switcher.Off();
             }

@@ -9,7 +9,7 @@ namespace Commands
     {
         private static CommandBus _instance;
 
-        public static CommandBus singleton
+        public static CommandBus Instance
         {
             get
             {
@@ -41,6 +41,7 @@ namespace Commands
             var type = typeof(T);
             if (_handlers.ContainsKey(type))
                 _handlers[type] = Delegate.Remove(_handlers[type], command);
+            _handlers.Remove(type);
         }
 
         public void Handle<T>(T command) where T : struct

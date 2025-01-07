@@ -78,7 +78,7 @@ public class VFX : MonoBehaviour
     public void Return()
     {
         if (returnOnDone)
-            VFXController.instance.Return(this);
+            VFXController.Instance.Return(this);
     }
 
     private void OnParticleSystemStopped()

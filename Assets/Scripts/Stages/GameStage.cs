@@ -27,10 +27,12 @@ namespace Stages
 
         private IEnumerator Start()
         {
+            CommandBus.Instance.RegisterHandler<OnPlayerSpawned>(SetPlayerModel);
+            
             _unusedHints = new List<Hint>();
             _hintsInUse = new Dictionary<int, Hint>();
             
-            var handler = Addressables.LoadAssetAsync<GameObject>(GameConfigsAndSettings.instance.config.hint);
+            var handler = Addressables.LoadAssetAsync<GameObject>(GameConfigsAndSettings.Instance.config.hint);
             while (!handler.IsDone)
                 yield return null;
             _hintPrefab = handler.Result;
@@ -38,39 +40,44 @@ namespace Stages
             InstantiateHint();
         }
 
-        public void SetPlayerModel(UnitModel playerModel)
+        private void SetPlayerModel(OnPlayerSpawned data)
         {
-            _playerModel = playerModel;
-            _playerHP.SetValue(playerModel.hp, playerModel.maxHp);
-            _magazineLabel.text = $"{playerModel.weapon.magazineCapacity}/{playerModel.weapon.magazineCapacity}";
+            _playerModel = data.Model;
+            _playerHP.SetValue(data.Model.hp, data.Model.maxHp);
+            _magazineLabel.text = $"{data.Model.weapon.magazineCapacity}/{data.Model.weapon.magazineCapacity}";
         }
 
         protected override void OnOpen()
         {
             _gameWindow.SetActive(true);
             
-            CommandBus.singleton.RegisterHandler<UpdateAim>(UpdateAim);
-            CommandBus.singleton.RegisterHandler<ShowHint>(ShowHint);
-            CommandBus.singleton.RegisterHandler<HideHint>(HideHint);
-            CommandBus.singleton.RegisterHandler<UpdatePlayer>(UpdatePlayer);
-            CommandBus.singleton.RegisterHandler<UpdatePlayerWeapon>(UpdateWeapon);
+            CommandBus.Instance.RegisterHandler<UpdateAim>(UpdateAim);
+            CommandBus.Instance.RegisterHandler<ShowHint>(ShowHint);
+            CommandBus.Instance.RegisterHandler<HideHint>(HideHint);
+            CommandBus.Instance.RegisterHandler<UpdatePlayer>(UpdatePlayer);
+            CommandBus.Instance.RegisterHandler<UpdatePlayerWeapon>(UpdateWeapon);
         }
 
         protected override void OnClose()
         {
             _gameWindow.SetActive(false);
             
-            CommandBus.singleton.RemoveHandler<UpdateAim>(UpdateAim);
-            CommandBus.singleton.RemoveHandler<ShowHint>(ShowHint);
-            CommandBus.singleton.RemoveHandler<HideHint>(HideHint);
-            CommandBus.singleton.RemoveHandler<UpdatePlayer>(UpdatePlayer);
-            CommandBus.singleton.RemoveHandler<UpdatePlayerWeapon>(UpdateWeapon);
+            CommandBus.Instance.RemoveHandler<UpdateAim>(UpdateAim);
+            CommandBus.Instance.RemoveHandler<ShowHint>(ShowHint);
+            CommandBus.Instance.RemoveHandler<HideHint>(HideHint);
+            CommandBus.Instance.RemoveHandler<UpdatePlayer>(UpdatePlayer);
+            CommandBus.Instance.RemoveHandler<UpdatePlayerWeapon>(UpdateWeapon);
         }
 
         protected override void OnUpdate()
         {
         }
-        
+
+        public override StageType GetStageType()
+        {
+            return StageType.Game;
+        }
+
         protected override void OnLateUpdate()
         {
             _cross.transform.position = _crossPos;
@@ -93,8 +100,8 @@ namespace Stages
             hint.gameObject.SetActive(true);
             Color color = _hintsInUse.Count switch
             {
-                1 => GameConfigsAndSettings.instance.config.mainUseColor,
-                2 => GameConfigsAndSettings.instance.config.secondaryUseColor,
+                1 => GameConfigsAndSettings.Instance.config.mainUseColor,
+                2 => GameConfigsAndSettings.Instance.config.secondaryUseColor,
                 _ => Color.magenta
             };
             hint.SetHint(color, data.Text, data.Pos);

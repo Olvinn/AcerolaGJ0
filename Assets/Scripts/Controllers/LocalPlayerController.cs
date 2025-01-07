@@ -13,20 +13,20 @@ namespace Controllers
 
         private void Start()
         {
-            InputController.instance.onShoot = Shoot;
-            InputController.instance.aim += Aim;
-            InputController.instance.onReload += Reload;
+            InputController.Instance.onShoot = Shoot;
+            InputController.Instance.aim += Aim;
+            InputController.Instance.onReload += Reload;
         }
 
         protected override void Update()
         {
             base.Update();
-            Vector3 mov = new Vector3(InputController.instance.move.x, 0, InputController.instance.move.y);
+            Vector3 mov = new Vector3(InputController.Instance.move.x, 0, InputController.Instance.move.y);
             if (mov.magnitude > 1f)
                 mov.Normalize();
             _unit.Move(mov);
             _unit.Aim(_isAiming);
-            Vector3 rot = AimController.instance.worldAimPos - _unit.transform.position;
+            Vector3 rot = AimController.Instance.worldAimPos - _unit.transform.position;
             _unit.Look(rot);
         }
 
@@ -35,7 +35,7 @@ namespace Controllers
             base.SetUnit(unit, model);
             _unit.onTriggerEnter += SubscribeOnInput;
             _unit.onTriggerExit += UnsubscribeOnInput;
-            CommandBus.singleton.Handle(new UpdatePlayerWeapon()
+            CommandBus.Instance.Handle(new UpdatePlayerWeapon()
             {
                 CurrentMag = _currentRounds,
                 MaxMag = _model.weapon.magazineCapacity
@@ -46,9 +46,9 @@ namespace Controllers
         {
             if (_model.TakeDamage(damage))
             {
-                CameraController.instance.Shake(GameConfigsAndSettings.instance.config.damageCameraShakingMagnitude,
-                    GameConfigsAndSettings.instance.config.damageCameraShakingDuration);
-                CommandBus.singleton.Handle(new UpdatePlayer()
+                CameraController.Instance.Shake(GameConfigsAndSettings.Instance.config.damageCameraShakingMagnitude,
+                    GameConfigsAndSettings.Instance.config.damageCameraShakingDuration);
+                CommandBus.Instance.Handle(new UpdatePlayer()
                 {
                     CurrentHP = _model.hp,
                     MaxHP = _model.maxHp
@@ -60,8 +60,8 @@ namespace Controllers
         {
             if (_mainInteraction == null)
             {
-                InputController.instance.onMainInteract += trigger.Trigger;
-                CommandBus.singleton.Handle(new ShowHint()
+                InputController.Instance.onMainInteract += trigger.Trigger;
+                CommandBus.Instance.Handle(new ShowHint()
                 {
                     Id = trigger.GetHashCode(),
                     Pos = trigger.transform.position + Vector3.up,
@@ -71,8 +71,8 @@ namespace Controllers
             }
             else
             {
-                InputController.instance.onSecondaryInteract += trigger.Trigger;
-                CommandBus.singleton.Handle(new ShowHint()
+                InputController.Instance.onSecondaryInteract += trigger.Trigger;
+                CommandBus.Instance.Handle(new ShowHint()
                 {
                     Id = trigger.GetHashCode(),
                     Pos = trigger.transform.position + Vector3.up,
@@ -86,8 +86,8 @@ namespace Controllers
         {
             if (trigger == _mainInteraction)
             {
-                InputController.instance.onMainInteract -= trigger.Trigger;
-                CommandBus.singleton.Handle(new HideHint()
+                InputController.Instance.onMainInteract -= trigger.Trigger;
+                CommandBus.Instance.Handle(new HideHint()
                 {
                     Id = trigger.GetHashCode()
                 });
@@ -95,8 +95,8 @@ namespace Controllers
             }
             else if (trigger == _secondaryInteraction)
             {
-                InputController.instance.onSecondaryInteract -= trigger.Trigger;
-                CommandBus.singleton.Handle(new HideHint()
+                InputController.Instance.onSecondaryInteract -= trigger.Trigger;
+                CommandBus.Instance.Handle(new HideHint()
                 {
                     Id = trigger.GetHashCode()
                 });
@@ -107,8 +107,8 @@ namespace Controllers
         protected override void ShootEffects()
         {
             base.ShootEffects();
-            CameraController.instance.Shake(_model.weapon.recoil, .1f);
-            CommandBus.singleton.Handle(new UpdatePlayerWeapon()
+            CameraController.Instance.Shake(_model.weapon.recoil, .1f);
+            CommandBus.Instance.Handle(new UpdatePlayerWeapon()
             {
                 CurrentMag = _currentRounds,
                 MaxMag = _model.weapon.magazineCapacity
@@ -118,7 +118,7 @@ namespace Controllers
         protected override void ReloadComplete()
         {
             base.ReloadComplete();
-            CommandBus.singleton.Handle(new UpdatePlayerWeapon()
+            CommandBus.Instance.Handle(new UpdatePlayerWeapon()
             {
                 CurrentMag = _currentRounds,
                 MaxMag = _model.weapon.magazineCapacity

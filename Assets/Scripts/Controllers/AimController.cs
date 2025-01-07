@@ -10,36 +10,36 @@ namespace Controllers
         
         void Start()
         {
-            InputController.instance.aim += Aim;
+            InputController.Instance.aim += Aim;
         }
 
         void Update()
         {
             if (_isAiming)
             {
-                if (InputController.instance.isJoystick)
+                if (InputController.Instance.isJoystick)
                 {
-                    Vector3 rot = new Vector3(InputController.instance.lookDirection.x, 0,
-                        InputController.instance.lookDirection.y);
+                    Vector3 rot = new Vector3(InputController.Instance.lookDirection.x, 0,
+                        InputController.Instance.lookDirection.y);
                     Vector2 center = new Vector2(Screen.width * .5f, Screen.height * .5f);
-                    screenAimPos = center + InputController.instance.lookDirection * (Screen.height * .4f);
+                    screenAimPos = center + InputController.Instance.lookDirection * (Screen.height * .4f);
                     Rycast();
-                    CameraController.instance.SetOffset(rot);
+                    CameraController.Instance.SetOffset(rot);
                 }
                 else
                 {
-                    screenAimPos = InputController.instance.cursorPosistion;
+                    screenAimPos = InputController.Instance.cursorPosistion;
                     Rycast();
-                    Vector3 rot = new Vector3(InputController.instance.lookDirection.x, 0,
-                        InputController.instance.lookDirection.y);
-                    CameraController.instance.SetOffset(rot);
+                    Vector3 rot = new Vector3(InputController.Instance.lookDirection.x, 0,
+                        InputController.Instance.lookDirection.y);
+                    CameraController.Instance.SetOffset(rot);
                 }
-                CommandBus.singleton.Handle(new UpdateAim() { Show = true, Pos = screenAimPos });
+                CommandBus.Instance.Handle(new UpdateAim() { Show = true, Pos = screenAimPos });
             }
             else
             {
-                CameraController.instance.SetOffset(Vector3.zero);
-                CommandBus.singleton.Handle(new UpdateAim() { Show = false, Pos = screenAimPos });
+                CameraController.Instance.SetOffset(Vector3.zero);
+                CommandBus.Instance.Handle(new UpdateAim() { Show = false, Pos = screenAimPos });
             }
         }
 
@@ -50,12 +50,12 @@ namespace Controllers
 
         void Rycast()
         {
-            var ray = CameraController.instance.camera.ScreenPointToRay(screenAimPos);
+            var ray = CameraController.Instance.camera.ScreenPointToRay(screenAimPos);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
                 worldAimPos = hit.point;
             else
-                worldAimPos = GameController.instance.GetPlayerPos() + Vector3.up;
+                worldAimPos = GameController.Instance.GetPlayerPos() + Vector3.up;
         }
     }
 }

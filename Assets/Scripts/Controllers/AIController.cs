@@ -23,7 +23,7 @@ namespace Controllers
             base.Update();
             _unit.Aim(_playerFound);
             if (_playerFound)
-                _unit.Look(GameController.instance.GetPlayerPos() - _unit.transform.position);
+                _unit.Look(GameController.Instance.GetPlayerPos() - _unit.transform.position);
         }
 
         public override void SetUnit(Unit unit, UnitModel model)
@@ -40,10 +40,10 @@ namespace Controllers
 
         private bool FindPlayer()
         {
-            Vector3 playerPos = GameController.instance.GetPlayerPos();
+            Vector3 playerPos = GameController.Instance.GetPlayerPos();
             Ray ray = new Ray(_unit.transform.position + Vector3.up, playerPos - _unit.transform.position);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, GameConfigsAndSettings.instance.config.aiDetectDistance, _unitsLayer))
+            if (Physics.Raycast(ray, out hit, GameConfigsAndSettings.Instance.config.aiDetectDistance, _unitsLayer))
             {
                 if (Vector3.Distance(playerPos, hit.point + Vector3.down) < 2)
                 {
@@ -59,7 +59,7 @@ namespace Controllers
         {
             if (_playerFound)
             {
-                _unit.MoveTo(GameController.instance.GetPlayerPos());
+                _unit.MoveTo(GameController.Instance.GetPlayerPos());
                 _isShooting = true;
             }
             else
@@ -77,7 +77,7 @@ namespace Controllers
 
         IEnumerator Thinking()
         {
-            yield return new WaitForSeconds(GameConfigsAndSettings.instance.config.aiThinkingDelay + Random.Range(-1f, 1f));
+            yield return new WaitForSeconds(GameConfigsAndSettings.Instance.config.aiThinkingDelay + Random.Range(-1f, 1f));
             
             Move();
             if (!FindPlayer())

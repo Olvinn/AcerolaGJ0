@@ -148,13 +148,13 @@ namespace Units
             Ray ray = new Ray(_shootVFX.transform.position, 
                 Quaternion.Euler(Random.Range(-angle,angle),Random.Range(-angle,angle), 0) * transform.forward);
             RaycastHit[] hits;
-            hits = Physics.RaycastAll(ray, GameConfigsAndSettings.instance.config.shootingDistance, _shootingLayer);
+            hits = Physics.RaycastAll(ray, GameConfigsAndSettings.Instance.config.shootingDistance, _shootingLayer);
             Array.Sort(hits,
                 (a, b) =>
                     (a.distance.CompareTo(b.distance)));
             foreach (var hit in hits)
             {
-                VFX impact = VFXController.instance.GetEffect(EffectType.BulletImpact);
+                VFX impact = VFXController.Instance.GetEffect(EffectType.BulletImpact);
                 impact.transform.position = hit.point;
                 impact.transform.rotation = Quaternion.LookRotation(ray.direction);
                 Unit unit;
@@ -165,10 +165,10 @@ namespace Units
             }
 
             if (hits.Length > 0)
-                VFXController.instance.GetEffect(EffectType.BulletTrail).StartEffect(ray.origin, hits[0].point);
+                VFXController.Instance.GetEffect(EffectType.BulletTrail).StartEffect(ray.origin, hits[0].point);
             else
-                VFXController.instance.GetEffect(EffectType.BulletTrail).StartEffect(ray.origin, 
-                    ray.origin + ray.direction * GameConfigsAndSettings.instance.config.shootingDistance);
+                VFXController.Instance.GetEffect(EffectType.BulletTrail).StartEffect(ray.origin, 
+                    ray.origin + ray.direction * GameConfigsAndSettings.Instance.config.shootingDistance);
 
             return true;
         }

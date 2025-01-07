@@ -53,7 +53,7 @@ namespace Controllers
 
         public void SendMessage()
         {
-            onSendNetworkMessage?.Invoke(new ChatMessage(_input.text, NetworkController.instance.networkName));
+            onSendNetworkMessage?.Invoke(new ChatMessage(_input.text, NetworkController.Instance.networkName));
             _input.text = String.Empty;
         }
     }

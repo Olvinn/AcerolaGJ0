@@ -1,5 +1,5 @@
-using System;
 using System.Collections;
+using Commands;
 using Networking;
 using Stages;
 using Units;
@@ -11,7 +11,6 @@ namespace Controllers
 {
     public class GameController : Singleton<GameController>
     {
-        [SerializeField] private GameStage _gameStage;
         [SerializeField] private Transform _environment, _units, _players;
         [SerializeField] private NavMeshSurface _navmesh;
 
@@ -23,11 +22,9 @@ namespace Controllers
 
         private IEnumerator Start()
         {
-            _currentStage = _gameStage;
-            
-            var locationHandleFloor1 = Addressables.LoadAssetAsync<GameObject>(GameConfigsAndSettings.instance.config.debugLevel);
-            var playerHandle = Addressables.LoadAssetAsync<GameObject>(GameConfigsAndSettings.instance.config.playerUnit);
-            var enemyHandle = Addressables.LoadAssetAsync<GameObject>(GameConfigsAndSettings.instance.config.enemyUnit);
+            var locationHandleFloor1 = Addressables.LoadAssetAsync<GameObject>(GameConfigsAndSettings.Instance.config.debugLevel);
+            var playerHandle = Addressables.LoadAssetAsync<GameObject>(GameConfigsAndSettings.Instance.config.playerUnit);
+            var enemyHandle = Addressables.LoadAssetAsync<GameObject>(GameConfigsAndSettings.Instance.config.enemyUnit);
 
             while (!locationHandleFloor1.IsDone || !playerHandle.IsDone || !enemyHandle.IsDone)
                 yield return null;
@@ -42,8 +39,6 @@ namespace Controllers
             SetUpPlayer(Instantiate(playerHandle.Result, _units).GetComponent<Unit>());
 
             SpawnEnemies();
-
-            _gameStage.Open();
         }
 
         public Vector3 GetPlayerPos()
@@ -60,26 +55,26 @@ namespace Controllers
 
         public void StartServer()
         {
-            NetworkController.instance.networkName = "Host";
-            NetworkController.instance.HostGame();
+            NetworkController.Instance.networkName = "Host";
+            NetworkController.Instance.HostGame();
 
-            ChatController.instance.onSendNetworkMessage += NetworkController.instance.SendMessage;
-            ChatController.instance.onSendNetworkMessage += ChatController.instance.ReceiveNetworkMessage;
-            NetworkController.instance.onReceiveMessage += ChatController.instance.ReceiveNetworkMessage;
+            ChatController.Instance.onSendNetworkMessage += NetworkController.Instance.SendMessage;
+            ChatController.Instance.onSendNetworkMessage += ChatController.Instance.ReceiveNetworkMessage;
+            NetworkController.Instance.onReceiveMessage += ChatController.Instance.ReceiveNetworkMessage;
         }
 
         public void StartClient()
         {
-            NetworkController.instance.networkName = "Client";
-            NetworkController.instance.ConnectToHost();
+            NetworkController.Instance.networkName = "Client";
+            NetworkController.Instance.ConnectToHost();
 
-            ChatController.instance.onSendNetworkMessage += NetworkController.instance.SendMessage;
-            NetworkController.instance.onReceiveMessage += ChatController.instance.ReceiveNetworkMessage;
+            ChatController.Instance.onSendNetworkMessage += NetworkController.Instance.SendMessage;
+            NetworkController.Instance.onReceiveMessage += ChatController.Instance.ReceiveNetworkMessage;
         }
 
         public void StopNetworking()
         {
-            NetworkController.instance.Stop();
+            NetworkController.Instance.Stop();
         }
 
         private void ChangeStage(Stage stage)
@@ -93,10 +88,10 @@ namespace Controllers
         {
             _playerController = new GameObject("Player Controller").AddComponent<LocalPlayerController>();
             _playerController.transform.SetParent(_players);
-            Weapon weapon = GameConfigsAndSettings.instance.config.weapons[0];
+            Weapon weapon = GameConfigsAndSettings.Instance.config.weapons[0];
             UnitModel model = new UnitModel(100, Team.Player, 1.5f, 5, 210, weapon);
             _playerController.SetUnit(unit, model);
-            _gameStage.SetPlayerModel(model);
+            CommandBus.Instance.Handle(new OnPlayerSpawned() { Model = model });
         }
 
         private void SpawnEnemies()
@@ -108,7 +103,7 @@ namespace Controllers
                 enemy.transform.SetParent(_players);
                 var unit = Instantiate(_enemyPrefab, _units).GetComponent<Unit>();
                 unit.Teleport(pos.transform.position, pos.transform.rotation);
-                Weapon weapon = GameConfigsAndSettings.instance.config.weapons[1];
+                Weapon weapon = GameConfigsAndSettings.Instance.config.weapons[1];
                 UnitModel model = new UnitModel(30, Team.Aberrations, 1, 3, 180, weapon);
                 enemy.SetUnit(unit, model);
             }
