@@ -21,12 +21,19 @@ namespace Controllers
         protected override void Update()
         {
             base.Update();
-            Vector3 mov = new Vector3(InputController.Instance.move.x, 0, InputController.Instance.move.y);
+            _unit.Aim(_isAiming);
+        }
+
+        public void Move(Vector2 dir)
+        {
+            Vector3 mov = new Vector3(dir.x, 0, dir.y);
             if (mov.magnitude > 1f)
                 mov.Normalize();
             _unit.Move(mov);
-            _unit.Aim(_isAiming);
-            Vector3 rot = AimController.Instance.worldAimPos - _unit.transform.position;
+        }
+
+        public void Look(Vector3 rot)
+        {
             _unit.Look(rot);
         }
 
@@ -130,7 +137,7 @@ namespace Controllers
             
         }
         
-        void Aim(bool value)
+        public void Aim(bool value)
         {
             _isAiming = value;
         }

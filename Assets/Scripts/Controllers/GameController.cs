@@ -91,7 +91,7 @@ namespace Controllers
             Weapon weapon = GameConfigsAndSettings.Instance.config.weapons[0];
             UnitModel model = new UnitModel(100, Team.Player, 1.5f, 5, 210, weapon);
             _playerController.SetUnit(unit, model);
-            CommandBus.Instance.Handle(new OnPlayerSpawned() { Model = model });
+            CommandBus.Instance.Handle(new OnPlayerSpawned() { Model = model, Controller = _playerController});
         }
 
         private void SpawnEnemies()

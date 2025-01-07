@@ -1,3 +1,4 @@
+using Controllers;
 using Units;
 using UnityEngine;
 
@@ -36,5 +37,6 @@ namespace Commands
     public struct OnPlayerSpawned
     {
         public UnitModel Model;
+        public LocalPlayerController Controller;
     }
 }

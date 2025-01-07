@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Commands;
+using Controllers;
 using TMPro;
 using UI;
 using Units;
@@ -20,6 +21,7 @@ namespace Stages
         
         private GameObject _hintPrefab;
         private UnitModel _playerModel;
+        private LocalPlayerController _playerController;
         
         private Vector2 _crossPos;
         private List<Hint> _unusedHints;
@@ -43,6 +45,7 @@ namespace Stages
         private void SetPlayerModel(OnPlayerSpawned data)
         {
             _playerModel = data.Model;
+            _playerController = data.Controller;
             _playerHP.SetValue(data.Model.hp, data.Model.maxHp);
             _magazineLabel.text = $"{data.Model.weapon.magazineCapacity}/{data.Model.weapon.magazineCapacity}";
         }
@@ -56,6 +59,10 @@ namespace Stages
             CommandBus.Instance.RegisterHandler<HideHint>(HideHint);
             CommandBus.Instance.RegisterHandler<UpdatePlayer>(UpdatePlayer);
             CommandBus.Instance.RegisterHandler<UpdatePlayerWeapon>(UpdateWeapon);
+
+            InputController.Instance.aim += _playerController.Aim;
+            InputController.Instance.onShoot += _playerController.Shoot;
+            InputController.Instance.onReload += _playerController.Reload;
         }
 
         protected override void OnClose()
@@ -67,10 +74,17 @@ namespace Stages
             CommandBus.Instance.RemoveHandler<HideHint>(HideHint);
             CommandBus.Instance.RemoveHandler<UpdatePlayer>(UpdatePlayer);
             CommandBus.Instance.RemoveHandler<UpdatePlayerWeapon>(UpdateWeapon);
+
+            InputController.Instance.aim -= _playerController.Aim;
+            InputController.Instance.onShoot -= _playerController.Shoot;
+            InputController.Instance.onReload -= _playerController.Reload;
         }
 
         protected override void OnUpdate()
         {
+            _playerController.Move(InputController.Instance.move);
+            Vector3 rot = AimController.Instance.worldAimPos - _playerController.GetPos();
+            _playerController.Look(rot);
         }
 
         public override StageType GetStageType()
