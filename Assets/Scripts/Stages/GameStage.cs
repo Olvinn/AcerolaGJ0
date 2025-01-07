@@ -82,6 +82,8 @@ namespace Stages
 
         protected override void OnUpdate()
         {
+            if (!_playerController) return;
+            
             _playerController.Move(InputController.Instance.move);
             Vector3 rot = AimController.Instance.worldAimPos - _playerController.GetPos();
             _playerController.Look(rot);
