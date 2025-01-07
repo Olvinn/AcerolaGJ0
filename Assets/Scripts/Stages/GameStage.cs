@@ -1,9 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Commands;
 using TMPro;
 using UI;
+using Units;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -19,6 +19,7 @@ namespace Stages
         [SerializeField] private TextMeshProUGUI _magazineLabel;
         
         private GameObject _hintPrefab;
+        private UnitModel _playerModel;
         
         private Vector2 _crossPos;
         private List<Hint> _unusedHints;
@@ -37,6 +38,13 @@ namespace Stages
             InstantiateHint();
         }
 
+        public void SetPlayerModel(UnitModel playerModel)
+        {
+            _playerModel = playerModel;
+            _playerHP.SetValue(playerModel.hp, playerModel.maxHp);
+            _magazineLabel.text = $"{playerModel.weapon.magazineCapacity}/{playerModel.weapon.magazineCapacity}";
+        }
+
         protected override void OnOpen()
         {
             _gameWindow.SetActive(true);
@@ -44,6 +52,8 @@ namespace Stages
             CommandBus.singleton.RegisterHandler<UpdateAim>(UpdateAim);
             CommandBus.singleton.RegisterHandler<ShowHint>(ShowHint);
             CommandBus.singleton.RegisterHandler<HideHint>(HideHint);
+            CommandBus.singleton.RegisterHandler<UpdatePlayer>(UpdatePlayer);
+            CommandBus.singleton.RegisterHandler<UpdatePlayerWeapon>(UpdateWeapon);
         }
 
         protected override void OnClose()
@@ -53,6 +63,8 @@ namespace Stages
             CommandBus.singleton.RemoveHandler<UpdateAim>(UpdateAim);
             CommandBus.singleton.RemoveHandler<ShowHint>(ShowHint);
             CommandBus.singleton.RemoveHandler<HideHint>(HideHint);
+            CommandBus.singleton.RemoveHandler<UpdatePlayer>(UpdatePlayer);
+            CommandBus.singleton.RemoveHandler<UpdatePlayerWeapon>(UpdateWeapon);
         }
 
         protected override void OnUpdate()
@@ -104,6 +116,16 @@ namespace Stages
             var hint = Instantiate(_hintPrefab, _hints).GetComponent<Hint>();
             _unusedHints.Add(hint);
             hint.gameObject.SetActive(false);
+        }
+        
+        private void UpdatePlayer(UpdatePlayer data)
+        {
+            _playerHP.SetValue(data.CurrentHP, data.MaxHP);
+        }
+
+        private void UpdateWeapon(UpdatePlayerWeapon data)
+        {
+            _magazineLabel.text = $"{data.CurrentMag}/{data.MaxMag}";
         }
     }
 }

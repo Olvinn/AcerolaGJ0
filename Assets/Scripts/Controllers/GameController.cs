@@ -11,7 +11,7 @@ namespace Controllers
 {
     public class GameController : Singleton<GameController>
     {
-        [SerializeField] private Stage _gameStage;
+        [SerializeField] private GameStage _gameStage;
         [SerializeField] private Transform _environment, _units, _players;
         [SerializeField] private NavMeshSurface _navmesh;
 
@@ -96,6 +96,7 @@ namespace Controllers
             Weapon weapon = GameConfigsAndSettings.instance.config.weapons[0];
             UnitModel model = new UnitModel(100, Team.Player, 1.5f, 5, 210, weapon);
             _playerController.SetUnit(unit, model);
+            _gameStage.SetPlayerModel(model);
         }
 
         private void SpawnEnemies()

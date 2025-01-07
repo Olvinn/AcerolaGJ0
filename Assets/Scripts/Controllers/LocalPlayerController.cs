@@ -35,7 +35,11 @@ namespace Controllers
             base.SetUnit(unit, model);
             _unit.onTriggerEnter += SubscribeOnInput;
             _unit.onTriggerExit += UnsubscribeOnInput;
-            UIController.instance.UpdateMagazineMagazine(_currentRounds, _model.weapon.magazineCapacity);
+            CommandBus.singleton.Handle(new UpdatePlayerWeapon()
+            {
+                CurrentMag = _currentRounds,
+                MaxMag = _model.weapon.magazineCapacity
+            });
         }
 
         public override void TakeDamage(Damage damage)
@@ -44,7 +48,11 @@ namespace Controllers
             {
                 CameraController.instance.Shake(GameConfigsAndSettings.instance.config.damageCameraShakingMagnitude,
                     GameConfigsAndSettings.instance.config.damageCameraShakingDuration);
-                UIController.instance.UpdatePlayerHP(_model.hp, _model.maxHp);
+                CommandBus.singleton.Handle(new UpdatePlayer()
+                {
+                    CurrentHP = _model.hp,
+                    MaxHP = _model.maxHp
+                });
             }
         }
     
@@ -100,13 +108,21 @@ namespace Controllers
         {
             base.ShootEffects();
             CameraController.instance.Shake(_model.weapon.recoil, .1f);
-            UIController.instance.UpdateMagazineMagazine(_currentRounds, _model.weapon.magazineCapacity);
+            CommandBus.singleton.Handle(new UpdatePlayerWeapon()
+            {
+                CurrentMag = _currentRounds,
+                MaxMag = _model.weapon.magazineCapacity
+            });
         }
 
         protected override void ReloadComplete()
         {
             base.ReloadComplete();
-            UIController.instance.UpdateMagazineMagazine(_currentRounds, _model.weapon.magazineCapacity);
+            CommandBus.singleton.Handle(new UpdatePlayerWeapon()
+            {
+                CurrentMag = _currentRounds,
+                MaxMag = _model.weapon.magazineCapacity
+            });
         }
 
         public void Die()

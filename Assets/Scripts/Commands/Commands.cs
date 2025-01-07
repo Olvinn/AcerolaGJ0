@@ -19,4 +19,16 @@ namespace Commands
     {
         public int Id;
     }
+
+    public struct UpdatePlayer
+    {
+        public float CurrentHP;
+        public float MaxHP;
+    }
+
+    public struct UpdatePlayerWeapon
+    {
+        public float CurrentMag;
+        public float MaxMag;
+    }
 }
