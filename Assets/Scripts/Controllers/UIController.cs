@@ -11,7 +11,6 @@ namespace Controllers
     {
         [SerializeField] private Transform _hints;
         [SerializeField] private HpBar _playerHP;
-        [SerializeField] private Transform _cross;
         [SerializeField] private TextMeshProUGUI _magazineLabel;
 
         private GameObject _hintPrefab;
@@ -19,8 +18,6 @@ namespace Controllers
         private List<Hint> _unusedHints;
         private Dictionary<int, Hint> _hintsInUse;
         private int _counter;
-
-        private Vector2 _crossPos;
 
         private IEnumerator Start()
         {
@@ -33,11 +30,6 @@ namespace Controllers
             _hintPrefab = handler.Result;
         
             InstantiateHint();
-        }
-
-        private void LateUpdate()
-        {
-            _cross.transform.position = _crossPos;
         }
 
         public int ShowHint(Color color, string text, Vector3 pos)
@@ -68,12 +60,6 @@ namespace Controllers
         public void UpdatePlayerHP(float value, float max)
         {
             _playerHP.SetValue(value, max);
-        }
-
-        public void UpdateAim(bool show, Vector2 pos)
-        {
-            _crossPos = pos;
-            _cross.gameObject.SetActive(show);
         }
 
         public void UpdateMagazineMagazine(int current, int max)

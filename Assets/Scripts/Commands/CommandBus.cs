@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Core
+namespace Commands
 {
     public delegate void CommandHandler<T>(T command) where T : struct;
 

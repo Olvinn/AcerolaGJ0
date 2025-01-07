@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Networking;
 using Stages;
@@ -22,6 +23,8 @@ namespace Controllers
 
         private IEnumerator Start()
         {
+            _currentStage = _gameStage;
+            
             var locationHandleFloor1 = Addressables.LoadAssetAsync<GameObject>(GameConfigsAndSettings.instance.config.debugLevel);
             var playerHandle = Addressables.LoadAssetAsync<GameObject>(GameConfigsAndSettings.instance.config.playerUnit);
             var enemyHandle = Addressables.LoadAssetAsync<GameObject>(GameConfigsAndSettings.instance.config.enemyUnit);
@@ -40,13 +43,17 @@ namespace Controllers
 
             SpawnEnemies();
 
-            _currentStage = _gameStage;
             _gameStage.Open();
         }
 
         private void Update()
         {
-            _currentStage.UpdateStage();
+            _currentStage.Update();
+        }
+
+        private void LateUpdate()
+        {
+            _currentStage.LateUpdate();
         }
 
         public Vector3 GetPlayerPos()

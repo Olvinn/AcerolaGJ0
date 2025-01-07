@@ -1,3 +1,4 @@
+using Commands;
 using UnityEngine;
 
 namespace Controllers
@@ -33,12 +34,14 @@ namespace Controllers
                         InputController.instance.lookDirection.y);
                     CameraController.instance.SetOffset(rot);
                 }
-                UIController.instance.UpdateAim(true, screenAimPos);
+                CommandBus.singleton.Handle(new UpdateAim() { Show = true, Pos = screenAimPos });
+                // UIController.instance.UpdateAim(true, screenAimPos);
             }
             else
             {
                 CameraController.instance.SetOffset(Vector3.zero);
-                UIController.instance.UpdateAim(false, screenAimPos);
+                // UIController.instance.UpdateAim(false, screenAimPos);
+                CommandBus.singleton.Handle(new UpdateAim() { Show = false, Pos = screenAimPos });
             }
         }
 
