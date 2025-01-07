@@ -55,7 +55,7 @@ namespace Controllers
             if (Physics.Raycast(ray, out hit))
                 worldAimPos = hit.point;
             else
-                worldAimPos = GameController.instance.GetPlayerPos();
+                worldAimPos = GameController.instance.GetPlayerPos() + Vector3.up;
         }
     }
 }

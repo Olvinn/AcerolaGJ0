@@ -20,7 +20,7 @@ namespace Units
         [SerializeField] private LayerMask _shootingLayer;
         [SerializeField] private AnimationController _animator;
         [SerializeField] private VFX _shootVFX;
-        private Vector3 _cachedMovDir;
+        private Vector3 _cachedMovDir, _currentVelocity;
         private bool _cachedAim;
         private float _speed, _aimSpeed, _angularSpeed;
         private float _lastShotTime, _shotTimer;
@@ -38,7 +38,7 @@ namespace Units
             if (_agent.hasPath)
                 locMov = transform.worldToLocalMatrix * _agent.velocity;
             else
-                locMov = transform.worldToLocalMatrix * _cachedMovDir;
+                locMov = transform.worldToLocalMatrix * _currentVelocity;
             _animator.SetFloat("Speed", locMov.magnitude);
             _animator.SetFloat("X", locMov.x);
             _animator.SetFloat("Y", locMov.z);
@@ -77,8 +77,10 @@ namespace Units
 
         public void Move(Vector3 dir)
         {
-            _cachedMovDir = Vector3.Lerp(_cachedMovDir, dir * (_cachedAim ? _aimSpeed : _speed), Time.deltaTime * _agent.acceleration);
-            _agent.Move(_cachedMovDir * Time.deltaTime);
+            _currentVelocity = Vector3.MoveTowards(_currentVelocity, dir * (_cachedAim ? _aimSpeed : _speed), Time.deltaTime * _agent.acceleration);
+            _agent.Move(_currentVelocity * Time.deltaTime);
+            if (_currentVelocity.sqrMagnitude != 0)
+                _cachedMovDir = _currentVelocity;
         }
 
         public void MoveTo(Vector3 pos)
@@ -98,10 +100,9 @@ namespace Units
             }
             else
             {
-                if (_cachedMovDir.sqrMagnitude == 0)
-                    return;
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(_cachedMovDir),
-                    Time.deltaTime * _angularSpeed);
+                if (_cachedMovDir != transform.rotation.eulerAngles)
+                    transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(_cachedMovDir),
+                        Time.deltaTime * _angularSpeed);
             }
         }
 
