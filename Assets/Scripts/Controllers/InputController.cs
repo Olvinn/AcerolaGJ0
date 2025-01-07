@@ -10,7 +10,7 @@ namespace Controllers
         public Vector2 lookDirection;
         public Vector2 cursorPosistion;
         public Action<bool> aim, onShoot;
-        public Action onMainInteract, onSecondaryInteract, onReload;
+        public Action onMainInteract, onSecondaryInteract, onReload, onConsole;
         public bool isJoystick;
 
         public void ShakeGamepad(float magnitude, float time)
@@ -40,7 +40,7 @@ namespace Controllers
         public void OnLookGamepad(InputValue value)
         {
             lookDirection = value.Get<Vector2>();
-            Cursor.visible = false;
+            Cursor.visible = true;
             Cursor.lockState = CursorLockMode.Locked;
             aim.Invoke(lookDirection.sqrMagnitude != 0);
             isJoystick = true;
@@ -69,6 +69,11 @@ namespace Controllers
         public void OnReload(InputValue value)
         {
             onReload?.Invoke();
+        }
+
+        public void OnConsole(InputValue value)
+        {
+            onConsole?.Invoke();
         }
     }
 }
